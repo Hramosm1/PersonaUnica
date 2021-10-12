@@ -10,36 +10,39 @@ import tipoPersona from "./routes/tipo-persona-router";
 import empresas from "./routes/empresas-router";
 
 export class App {
-    private app: Application
-    constructor(port?: number | string) {
-        this.app = express()
-        this.settings()
-        this.midlewares()
-        this.routes()
-    }
-    //configuraciones del servidor
-    private settings(): void {
-        this.app.set('port', process.env.PORT || 3000)
-    }
-    //midlewares a implementar
-    private midlewares(): void {
-        this.app.use(cors())
-        this.app.use(json())
-        this.app.use(urlencoded({ extended: false }))
-    }
-    //rutas
-    private routes(): void {
-        this.app.use('/login', login)
-        this.app.use('/personaunica', personaunica)
-        this.app.use('/genero', generos)
-        this.app.use('/tipodocumento', tipoDocumentos)
-        this.app.use('/tipopersona', tipoPersona)
-        this.app.use('/empresas', empresas)
-    }
+  private app: Application;
+  constructor(port?: number | string) {
+    this.app = express();
+    this.settings();
+    this.midlewares();
+    this.routes();
+  }
+  //configuraciones del servidor
+  private settings(): void {
+    this.app.set("port", process.env.PORT || 80);
+  }
+  //midlewares a implementar
+  private midlewares(): void {
+    this.app.use(cors());
+    this.app.use(json());
+    this.app.use(urlencoded({ extended: false }));
+  }
+  //rutas
+  private routes(): void {
+    this.app.get("/", (req, res) => {
+      res.send("Servidor Funcionando");
+    });
+    this.app.use("/login", login);
+    this.app.use("/personaunica", personaunica);
+    this.app.use("/genero", generos);
+    this.app.use("/tipodocumento", tipoDocumentos);
+    this.app.use("/tipopersona", tipoPersona);
+    this.app.use("/empresas", empresas);
+  }
 
-    //funcion publica que inicia el servidor
-    public async listen(): Promise<void> {
-        await this.app.listen(this.app.get('port'))
-        console.log('server on port: ', this.app.get('port'))
-    }
+  //funcion publica que inicia el servidor
+  public async listen(): Promise<void> {
+    await this.app.listen(this.app.get("port"));
+    console.log("server on port: ", this.app.get("port"));
+  }
 }
