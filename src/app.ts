@@ -19,7 +19,7 @@ export class App {
   }
   //configuraciones del servidor
   private settings(): void {
-    this.app.set("port", process.env.PORT || 80);
+    this.app.set("port", process.env.PORT || 3000);
   }
   //midlewares a implementar
   private midlewares(): void {
@@ -30,7 +30,7 @@ export class App {
   //rutas
   private routes(): void {
     this.app.get("/", (req, res) => {
-      res.send("Servidor Funcionando");
+      res.send(process.env.USERNAME);
     });
     this.app.use("/login", login);
     this.app.use("/personaunica", personaunica);
