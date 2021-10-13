@@ -29,15 +29,15 @@ export class App {
   }
   //rutas
   private routes(): void {
-    this.app.get("/", (req, res) => {
+    this.app.get("/node/personaunica/", (req, res) => {
       res.send(process.env.USERNAME);
     });
-    this.app.use("/login", login);
-    this.app.use("/personaunica", personaunica);
-    this.app.use("/genero", generos);
-    this.app.use("/tipodocumento", tipoDocumentos);
-    this.app.use("/tipopersona", tipoPersona);
-    this.app.use("/empresas", empresas);
+    this.app.use("/node/personaunica/login", login);
+    this.app.use("/node/personaunica/perfiles", personaunica);
+    this.app.use("/node/personaunica/genero", generos);
+    this.app.use("/node/personaunica/tipodocumento", tipoDocumentos);
+    this.app.use("/node/personaunica/tipopersona", tipoPersona);
+    this.app.use("/node/personaunica/empresas", empresas);
   }
 
   //funcion publica que inicia el servidor
