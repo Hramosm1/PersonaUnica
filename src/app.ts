@@ -8,7 +8,7 @@ import tipos from "./routes/tipos.router";
 import empresas from "./routes/empresas-router";
 
 export class App {
-  base: string = process.env.URL_APP_BASE || "/";
+  base: string = process.env.URL_APP_BASE || "/api";
   private app: Application;
   constructor(port?: number | string) {
     this.app = express();
