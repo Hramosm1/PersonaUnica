@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { GetPool } from "../database";
 import { Binary, VarChar } from "mssql";
-import swt from "jsonwebtoken";
 import { Token } from "../token";
 
 export class LoginController {

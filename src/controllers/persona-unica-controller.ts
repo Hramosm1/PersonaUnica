@@ -8,9 +8,7 @@ export class PersonaUnicaController {
       const result = await pool
         .request()
         .input("id", req.params.id)
-        .query(
-          "SELECT id, nombre_ejecutivo, respuesta_json, fecha_creacion FROM VW_PU_Formularios WHERE id = @id"
-        );
+        .query("SELECT * FROM VW_PU_Formularios WHERE id = @id");
       res.send(result.recordset[0]);
     } catch (error: any) {
       console.error(error);
@@ -22,9 +20,7 @@ export class PersonaUnicaController {
       const pool = await GetPool();
       const result = await pool
         .request()
-        .query(
-          "SELECT id, nombre_ejecutivo, respuesta_json, fecha_creacion FROM VW_PU_Formularios"
-        );
+        .query("SELECT * FROM VW_PU_Formularios");
       res.send(result.recordset);
     } catch (error: any) {
       console.error(error);
@@ -33,11 +29,11 @@ export class PersonaUnicaController {
   }
   public async postData(req: Request | any, res: Response) {
     const json = req.body;
-    const query = `INSERT INTO PU_FormularioPersonaUnica (nombre_ejecutivo, respuesta_json) VALUES (@user, @json)`;
+    const query = `INSERT INTO PU_FormularioPersonaUnica (nombreEjecutivo, respuestaJson) VALUES (@user, @json)`;
     const jsonStr = JSON.stringify(json);
     try {
       const pool = await GetPool();
-      const result = await pool
+      await pool
         .request()
         .input("json", jsonStr)
         .input("user", json.nombreEjecutivo)

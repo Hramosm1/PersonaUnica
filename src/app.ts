@@ -4,12 +4,11 @@ import cors from "cors";
 //importacion de rutas
 import login from "./routes/login.router";
 import personaunica from "./routes/persona-unica.router";
-import generos from "./routes/generos.router";
-import tipoDocumentos from "./routes/tipo-documento-router";
-import tipoPersona from "./routes/tipo-persona-router";
+import tipos from "./routes/tipos.router";
 import empresas from "./routes/empresas-router";
 
 export class App {
+  base: string = process.env.URL_APP_BASE || "/";
   private app: Application;
   constructor(port?: number | string) {
     this.app = express();
@@ -29,15 +28,13 @@ export class App {
   }
   //rutas
   private routes(): void {
-    this.app.get("/node/personaunica/", (req, res) => {
-      res.send(process.env.USERNAME);
+    this.app.get(this.base, (req, res) => {
+      res.send({ mensaje: "hola mundo" });
     });
-    this.app.use("/node/personaunica/login", login);
-    this.app.use("/node/personaunica/perfiles", personaunica);
-    this.app.use("/node/personaunica/genero", generos);
-    this.app.use("/node/personaunica/tipodocumento", tipoDocumentos);
-    this.app.use("/node/personaunica/tipopersona", tipoPersona);
-    this.app.use("/node/personaunica/empresas", empresas);
+    this.app.use(this.base + "/login", login);
+    this.app.use(this.base + "/perfiles", personaunica);
+    this.app.use(this.base + "/tipos", tipos);
+    this.app.use(this.base + "/empresas", empresas);
   }
 
   //funcion publica que inicia el servidor
