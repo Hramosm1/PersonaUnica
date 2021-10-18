@@ -1,3 +1,4 @@
+import { Generos } from "./../core/database/tipes-tables/Generos";
 import { Request, Response } from "express";
 import { GetPool } from "../database";
 
@@ -7,8 +8,7 @@ export class TiposController {
    */
   public async getGeneros(req: Request, res: Response) {
     try {
-      const pool = await GetPool();
-      const response = await pool.request().query("SELECT * FROM PU_Generos");
+      const response = await Generos.getAll();
       res.send(response.recordset);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
