@@ -1,4 +1,5 @@
 import { PrismaClient } from ".prisma/client";
+import dateFormat from "dateformat";
 import { Request, Response } from "express";
 
 export class PersonaUnicaController {
@@ -21,6 +22,9 @@ export class PersonaUnicaController {
           PU_ReferenciasWeb: true,
           PU_Empleos_PU_Empleos_empresaToPU_Perfil: true,
           personaUnica: true,
+          observaciones: true,
+          razonSocial: true,
+          id: true,
         },
         where: { id: id },
       });
@@ -34,18 +38,34 @@ export class PersonaUnicaController {
   public async getAll(req: Request, res: Response) {
     const prisma = new PrismaClient();
     try {
-      const result = await prisma.pU_Perfil.findMany({
-        select: {
-          id: true,
-          PU_Nombres: true,
-          PU_Documentos: true,
-          fecha: true,
-          primerApellido: true,
-          segundoApellido: true,
-          razonSocial: true,
-        },
-      });
+      const result: any[] = await prisma.$queryRawUnsafe(
+        "SELECT p.id, p.primerApellido, p.segundoApellido, p.fecha, p.razonSocial, (SELECT TOP 1 documento FROM PU_Documentos WHERE idPerfil = p.id) AS documento, t.tipoPersona FROM PU_Perfil as p INNER JOIN PU_TiposPersona AS t ON p.tipo = t.id "
+      );
       res.send(result);
+    } catch (error: any) {
+      console.error(error);
+      res.send({ error: true, mensaje: error.message });
+    }
+  }
+  public async updatePerfil(req: Request, res: Response) {
+    const prisma = new PrismaClient();
+    const { id } = req.params;
+    let bod = req.body;
+    const dat = new Date(req.body.fecha).toLocaleDateString();
+    bod.fecha = dat;
+    const {
+      primerApellido,
+      segundoApellido,
+      fecha,
+      genero,
+      observaciones,
+      razonSocial,
+    } = bod;
+    try {
+      const result = await prisma.$queryRawUnsafe(
+        `UPDATE PU_Perfil SET primerApellido='${primerApellido}', segundoApellido='${segundoApellido}',fecha=convert(datetime, '${fecha}', 104)+1,genero=${genero},observaciones='${observaciones}',razonSocial='${razonSocial}' WHERE id ='${id}'`
+      );
+      res.send({ error: false, mensaje: result });
     } catch (error: any) {
       console.error(error);
       res.send({ error: true, mensaje: error.message });
