@@ -7,7 +7,6 @@ export class LoginController {
     const prisma = new PrismaClient();
     const _Token = new Token();
     const { username, password } = req.body;
-    console.log(username, password);
     try {
       const result: any = await prisma.$queryRawUnsafe(
         `SELECT idCobrador, estado, CoNombre as nombre, CoApellido as apellido FROM IC_Cobrador WHERE Usuario = '${username}' AND Password = CAST('${password}' AS binary)`

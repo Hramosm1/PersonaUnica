@@ -17,8 +17,7 @@ export class TiposController {
   public async getTipoDocumento(req: Request, res: Response) {
     const prisma = new PrismaClient();
     try {
-      const response = await prisma.pU_Documentos.findMany();
-
+      const response = await prisma.pU_TiposDocumento.findMany();
       res.send(response);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
