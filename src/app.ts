@@ -32,9 +32,9 @@ export class App {
       res.send({ mensaje: "hola mundo" });
     });
     this.app.use(this.base + "/login", login);
-    // this.app.use(this.base + "/perfiles", personaunica);
-    // this.app.use(this.base + "/tipos", tipos);
-    // this.app.use(this.base + "/empresas", empresas);
+    this.app.use(this.base + "/perfiles", personaunica);
+    this.app.use(this.base + "/tipos", tipos);
+    this.app.use(this.base + "/empresas", empresas);
   }
 
   //funcion publica que inicia el servidor

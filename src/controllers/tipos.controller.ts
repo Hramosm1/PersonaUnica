@@ -1,81 +1,70 @@
-import { Generos } from "./../core/database/tipes-tables/Generos";
 import { Request, Response } from "express";
-import { GetPool } from "../database";
+import { PrismaClient } from "@prisma/client";
 
 export class TiposController {
   /**
    * getGeneros
    */
   public async getGeneros(req: Request, res: Response) {
+    const prisma = new PrismaClient();
     try {
-      const response = await Generos.getAll();
-      res.send(response.recordset);
+      const response = await prisma.pU_Generos.findMany();
+      res.send(response);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
     }
   }
   public async getTipoDocumento(req: Request, res: Response) {
+    const prisma = new PrismaClient();
     try {
-      const pool = await GetPool();
-      const response = await pool
-        .request()
-        .query("SELECT * FROM PU_TiposDocumento");
-      res.send(response.recordset);
+      const response = await prisma.pU_Documentos.findMany();
+
+      res.send(response);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
     }
   }
   public async getTipoPersona(req: Request, res: Response) {
+    const prisma = new PrismaClient();
     try {
-      const pool = await GetPool();
-      const response = await pool
-        .request()
-        .query("SELECT * FROM PU_TiposPersona");
-      res.send(response.recordset);
+      const response = await prisma.pU_TiposPersona.findMany();
+      res.send(response);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
     }
   }
   public async getTIpoContacto(req: Request, res: Response) {
+    const prisma = new PrismaClient();
     try {
-      const pool = await GetPool();
-      const response = await pool
-        .request()
-        .query("SELECT * FROM PU_TiposContacto");
-      res.send(response.recordset);
+      const response = await prisma.pU_TiposContacto.findMany();
+      res.send(response);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
     }
   }
   public async getTipoTelefono(req: Request, res: Response) {
+    const prisma = new PrismaClient();
     try {
-      const pool = await GetPool();
-      const response = await pool
-        .request()
-        .query("SELECT * FROM PU_TiposTelefono");
-      res.send(response.recordset);
+      const response = await prisma.pU_TiposTelefono.findMany();
+      res.send(response);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
     }
   }
   public async getTipoOrigen(req: Request, res: Response) {
+    const prisma = new PrismaClient();
     try {
-      const pool = await GetPool();
-      const response = await pool
-        .request()
-        .query("SELECT * FROM PU_TiposOrigen");
-      res.send(response.recordset);
+      const response = await prisma.pU_TiposOrigen.findMany();
+      res.send(response);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
     }
   }
   public async getTipoPaginaWeb(req: Request, res: Response) {
+    const prisma = new PrismaClient();
     try {
-      const pool = await GetPool();
-      const response = await pool
-        .request()
-        .query("SELECT * FROM PU_TiposPaginaWeb");
-      res.send(response.recordset);
+      const response = await prisma.pU_TiposPaginaWeb.findMany();
+      res.send(response);
     } catch (error: any) {
       res.send({ error: true, mensaje: error.message });
     }
