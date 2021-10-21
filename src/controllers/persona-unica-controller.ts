@@ -36,6 +36,7 @@ export class PersonaUnicaController {
     try {
       const result = await prisma.pU_Perfil.findMany({
         select: {
+          id: true,
           PU_Nombres: true,
           PU_Documentos: true,
           fecha: true,
