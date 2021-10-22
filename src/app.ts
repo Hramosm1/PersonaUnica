@@ -16,7 +16,7 @@ import contactos from "./routes/contactos";
 import referenciasWeb from "./routes/referenciasWeb";
 
 export class App {
-  base: string = "/api";
+  base: string = "/node/api";
   private app: Application;
   constructor(port?: number | string) {
     this.app = express();
