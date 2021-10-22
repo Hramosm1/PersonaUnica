@@ -1,5 +1,4 @@
 import { PrismaClient } from ".prisma/client";
-import dateFormat from "dateformat";
 import { Request, Response } from "express";
 
 export class PersonaUnicaController {

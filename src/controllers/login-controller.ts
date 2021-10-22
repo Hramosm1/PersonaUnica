@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Binary, VarChar } from "mssql";
 import { Token } from "../token";
 import { PrismaClient } from "@prisma/client";
 export class LoginController {
