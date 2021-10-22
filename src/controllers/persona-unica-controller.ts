@@ -19,7 +19,7 @@ export class PersonaUnicaController {
           PU_Documentos: true,
           PU_Telefonos: true,
           PU_ReferenciasWeb: true,
-          PU_Empleos_PU_Empleos_empresaToPU_Perfil: true,
+          PU_Empleos_PU_Empleos_idPerfilToPU_Perfil: true,
           personaUnica: true,
           observaciones: true,
           razonSocial: true,
@@ -27,8 +27,28 @@ export class PersonaUnicaController {
         },
         where: { id: id },
       });
+      if (result?.PU_Empleos_PU_Empleos_idPerfilToPU_Perfil.length) {
+        const { PU_Empleos_PU_Empleos_idPerfilToPU_Perfil } = result;
+        let empresas = PU_Empleos_PU_Empleos_idPerfilToPU_Perfil;
 
-      res.send(result);
+        for (let index = 0; index < empresas.length; index++) {
+          const emp = empresas[index];
+          const nombre = await prisma.pU_Perfil.findUnique({
+            where: { id: emp.empresa },
+            select: { razonSocial: true },
+          });
+          if (nombre?.razonSocial) {
+            empresas[index].empresa = nombre.razonSocial;
+          }
+        }
+        const rem = {
+          empleos: empresas,
+          ...result,
+        };
+        res.send(rem);
+      } else {
+        res.send(result);
+      }
     } catch (error: any) {
       console.error(error);
       res.send({ error: true, mensaje: error.message });
@@ -107,7 +127,9 @@ export class PersonaUnicaController {
         prisma.pU_Correos.create({ data: { idPerfil: id, ...correos[i] } });
       }
       for await (const i of empleos) {
-        prisma.pU_Empleos.create({ data: { idPerfil: id, ...empleos[i] } });
+        await prisma.pU_Empleos.create({
+          data: { idPerfil: id, ...empleos[i] },
+        });
       }
       for await (const i of documentos) {
         prisma.pU_Documentos.create({

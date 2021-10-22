@@ -122,15 +122,6 @@ model cdZonaRoja {
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model errorJson {
-  IdErrorJson Int       @default(autoincrement())
-  json        String?   @db.NText
-  Fecha       DateTime? @db.DateTime
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model ErrorLog {
   Host          String?   @db.VarChar(150)
   App           String?   @db.VarChar(150)
@@ -235,30 +226,6 @@ model exl_process_state {
   description String? @db.VarChar(100)
   icon        String? @db.VarChar(100)
   color       String? @db.VarChar(100)
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model exl_temp_desasignacion_cartera19535 {
-  process_id  Int?
-  row_id      Int
-  idempresa   String? @db.VarChar(1250)
-  idmoneda    String? @db.VarChar(1250)
-  noprestamo  String? @db.VarChar(1250)
-  observacion String? @db.VarChar(1250)
-
-  @@ignore
-}
-
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
-model exl_temp_desasignacion_cartera19537 {
-  process_id  Int?
-  row_id      Int
-  idempresa   String? @db.VarChar(1250)
-  idmoneda    String? @db.VarChar(1250)
-  noprestamo  String? @db.VarChar(1250)
-  observacion String? @db.VarChar(1250)
-
-  @@ignore
 }
 
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
@@ -988,7 +955,6 @@ model IC_Cobrador {
   IC_Reprogramacion          IC_Reprogramacion[]
   IC_visita                  IC_visita[]
   IC_VUELTACARTERA           IC_VUELTACARTERA[]
-  PU_Perfil                  PU_Perfil[]
   reporte_bitacora           reporte_bitacora[]
   tuser_role                 tuser_role[]
 
@@ -1537,7 +1503,6 @@ model IC_DireccionCompania {
   IdZona              Int?
   IdColonia           Int?
   IdCompania          Int?
-  Codigodep           Int?
   GNMUNI              GNMUNI?      @relation(fields: [CodigoMuni], references: [codigomuni], onDelete: NoAction, onUpdate: NoAction, map: "FK_IC_DireccionCompania_GNMUNI")
   IC_Colonia          IC_Colonia?  @relation(fields: [IdColonia], references: [Idcolonia], onDelete: NoAction, onUpdate: NoAction, map: "FK_IC_DireccionCompania_IC_Colonia")
   IC_Compania         IC_Compania? @relation(fields: [IdCompania], references: [IdCompania], onDelete: NoAction, onUpdate: NoAction, map: "FK_IC_DireccionCompania_IC_Compania")
@@ -1634,7 +1599,6 @@ model IC_EmailCompania {
   FechaModificacion   DateTime?   @db.DateTime
   UsuarioModificacion String?     @db.VarChar(100)
   IdCompania          Int
-  Estado              Boolean?
   IC_Compania         IC_Compania @relation(fields: [IdCompania], references: [IdCompania], onUpdate: NoAction, map: "FK_IC_EmailCompania_IC_Compania")
 }
 
@@ -2722,7 +2686,6 @@ model IC_RegistroIgss {
   UsurioBaja          String?            @db.VarChar(100)
   FechaModificacion   DateTime?          @db.DateTime
   UsuarioModificacion String?            @db.VarChar(100)
-  Estado              Boolean?
   IC_RelacionLaboral  IC_RelacionLaboral @relation(fields: [IdRelacionLaboral], references: [IdRelacionLaboral], onUpdate: NoAction, map: "FK_IC_RegistroIgss_IC_RelacionLaboral")
 }
 
@@ -2953,8 +2916,6 @@ model IC_TelefonoCompania {
   FechaModificacion   DateTime?   @db.DateTime
   UsuarioModificacion String?     @db.VarChar(100)
   IdCompania          Int
-  Estado              Boolean?
-  Observacion         String?     @db.VarChar(150)
   IC_Compania         IC_Compania @relation(fields: [IdCompania], references: [IdCompania], onUpdate: NoAction, map: "FK_IC_TelefonoCompania_IC_Compania")
 }
 
@@ -3122,174 +3083,6 @@ model IC_Zona {
   NombreZona           String?                @db.VarChar(1000)
   IC_Colonia           IC_Colonia[]
   IC_DireccionCompania IC_DireccionCompania[]
-}
-
-model PU_Contactos {
-  id                String           @id(map: "PK__PU_Conta__3213E83F65735664") @default(dbgenerated("newid()"), map: "DF__PU_Contactos__id__08119CAB") @db.UniqueIdentifier
-  nombreCompleto    String           @db.VarChar(150)
-  origenInformacion Int
-  tipoContacto      Int
-  idPerfil          String           @db.UniqueIdentifier
-  PU_Perfil         PU_Perfil        @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__idPer__0905C0E4")
-  PU_TiposOrigen    PU_TiposOrigen   @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__orige__09F9E51D")
-  PU_TiposContacto  PU_TiposContacto @relation(fields: [tipoContacto], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__tipoC__0AEE0956")
-}
-
-model PU_Correos {
-  id                String         @id(map: "PK__PU_Corre__3213E83FD58045EE") @default(dbgenerated("newid()"), map: "DF__PU_Correos__id__6F45EEE1") @db.UniqueIdentifier
-  correo            String         @db.VarChar(150)
-  idPerfil          String         @db.UniqueIdentifier
-  origenInformacion Int
-  PU_Perfil         PU_Perfil      @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Correo__idPer__703A131A")
-  PU_TiposOrigen    PU_TiposOrigen @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Correo__orige__712E3753")
-}
-
-model PU_Direcciones {
-  id                String         @id(map: "PK__PU_Direc__3213E83F8D2FB8EA") @default(dbgenerated("newid()"), map: "DF__PU_Direccion__id__034CE78E") @db.UniqueIdentifier
-  departamento      String         @db.VarChar(50)
-  municipio         String         @db.VarChar(50)
-  zona              Int
-  colonia           String?        @db.VarChar(50)
-  direccion         String         @db.VarChar(150)
-  referencia        String?        @db.VarChar(150)
-  origenInformacion Int
-  idPerfil          String         @db.UniqueIdentifier
-  PU_Perfil         PU_Perfil      @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Direcc__idPer__04410BC7")
-  PU_TiposOrigen    PU_TiposOrigen @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Direcc__orige__05353000")
-}
-
-model PU_Documentos {
-  id                String            @id(map: "PK__PU_Docum__3213E83F81F65186") @default(dbgenerated("newid()"), map: "DF__PU_Documento__id__6A8139C4") @db.UniqueIdentifier
-  tipo              Int
-  documento         String            @db.VarChar(25)
-  idPerfil          String            @db.UniqueIdentifier
-  PU_Perfil         PU_Perfil         @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Docume__idPer__6B755DFD")
-  PU_TiposDocumento PU_TiposDocumento @relation(fields: [tipo], references: [id], onUpdate: NoAction, map: "FK__PU_Documen__tipo__6C698236")
-}
-
-model PU_Empleos {
-  id                                       String         @id(map: "PK__PU_Emple__3213E83FFB1CA50E") @default(dbgenerated("newid()"), map: "DF__PU_Empleos__id__7D940E38") @db.UniqueIdentifier
-  empresa                                  String         @db.UniqueIdentifier
-  puesto                                   String         @db.VarChar(50)
-  fechaInicio                              DateTime       @db.Date
-  fechaFin                                 DateTime?      @db.Date
-  idPerfil                                 String         @db.UniqueIdentifier
-  origenInformacion                        Int
-  PU_Perfil_PU_Empleos_empresaToPU_Perfil  PU_Perfil      @relation("PU_Empleos_empresaToPU_Perfil", fields: [empresa], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__empre__00707AE3")
-  PU_Perfil_PU_Empleos_idPerfilToPU_Perfil PU_Perfil      @relation("PU_Empleos_idPerfilToPU_Perfil", fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__idPer__7E883271")
-  PU_TiposOrigen                           PU_TiposOrigen @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__orige__7F7C56AA")
-}
-
-model PU_Generos {
-  id        Int         @id(map: "PK__PU_Gener__3213E83F900C2AA6") @default(autoincrement())
-  genero    String      @db.VarChar(50)
-  PU_Perfil PU_Perfil[]
-}
-
-model PU_Nombres {
-  id        String    @id(map: "PK__PU_Nombr__3213E83F5C6AE4ED") @default(dbgenerated("newid()"), map: "DF__PU_Nombres__id__79C37D54") @db.UniqueIdentifier
-  nombre    String    @db.VarChar(50)
-  idPerfil  String    @db.UniqueIdentifier
-  PU_Perfil PU_Perfil @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Nombre__idPer__7AB7A18D")
-}
-
-model PU_Perfil {
-  id                                        String              @id(map: "PK__PU_Perfi__3213E83F661CC905") @default(dbgenerated("newid()"), map: "DF__PU_Perfil__id__63D43C35") @db.UniqueIdentifier
-  genero                                    Int?
-  primerApellido                            String?             @db.VarChar(50)
-  segundoApellido                           String?             @db.VarChar(50)
-  tipo                                      Int
-  razonSocial                               String?             @db.VarChar(150)
-  fecha                                     DateTime?           @db.Date
-  observaciones                             String?             @db.VarChar(500)
-  nombreEjecutivo                           BigInt
-  personaUnica                              Boolean?            @default(false, map: "DF__PU_Perfil__perso__64C8606E")
-  PU_Generos                                PU_Generos?         @relation(fields: [genero], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__PU_Perfil__gener__65BC84A7")
-  IC_Cobrador                               IC_Cobrador         @relation(fields: [nombreEjecutivo], references: [idCobrador], onUpdate: NoAction, map: "FK__PU_Perfil__nombr__67A4CD19")
-  PU_TiposPersona                           PU_TiposPersona     @relation(fields: [tipo], references: [id], onUpdate: NoAction, map: "FK__PU_Perfil__tipo__66B0A8E0")
-  PU_Contactos                              PU_Contactos[]
-  PU_Correos                                PU_Correos[]
-  PU_Direcciones                            PU_Direcciones[]
-  PU_Documentos                             PU_Documentos[]
-  PU_Empleos_PU_Empleos_empresaToPU_Perfil  PU_Empleos[]        @relation("PU_Empleos_empresaToPU_Perfil")
-  PU_Empleos_PU_Empleos_idPerfilToPU_Perfil PU_Empleos[]        @relation("PU_Empleos_idPerfilToPU_Perfil")
-  PU_Nombres                                PU_Nombres[]
-  PU_ReferenciasWeb                         PU_ReferenciasWeb[]
-  PU_Telefonos                              PU_Telefonos[]
-}
-
-model PU_ReferenciasWeb {
-  id                String            @id(map: "PK__PU_Refer__3213E83F2D26DC33") @default(dbgenerated("newid()"), map: "DF__PU_Referenci__id__0DCA7601") @db.UniqueIdentifier
-  tipo              Int
-  origenInformacion Int
-  link              String            @db.VarChar(150)
-  idPerfil          String            @db.UniqueIdentifier
-  PU_Perfil         PU_Perfil         @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Refere__idPer__0EBE9A3A")
-  PU_TiposOrigen    PU_TiposOrigen    @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Refere__orige__0FB2BE73")
-  PU_TiposPaginaWeb PU_TiposPaginaWeb @relation(fields: [tipo], references: [id], onUpdate: NoAction, map: "FK__PU_Referen__tipo__10A6E2AC")
-}
-
-model PU_Telefonos {
-  id                String           @id(map: "PK__PU_Telef__3213E83F5827D113") @default(dbgenerated("newid()"), map: "DF__PU_Telefonos__id__740AA3FE") @db.UniqueIdentifier
-  codigoPais        String           @db.VarChar(10)
-  telefono          String           @db.VarChar(15)
-  tipoTelefono      Int
-  idPerfil          String           @db.UniqueIdentifier
-  origenInformacion Int
-  PU_Perfil         PU_Perfil        @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Telefo__idPer__74FEC837")
-  PU_TiposOrigen    PU_TiposOrigen   @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Telefo__orige__75F2EC70")
-  PU_TiposTelefono  PU_TiposTelefono @relation(fields: [tipoTelefono], references: [id], onUpdate: NoAction, map: "FK__PU_Telefo__tipoT__76E710A9")
-}
-
-model PU_TiposAccion {
-  id     Int     @id(map: "PK__PU_Tipos__3213E83F7BC6A97D") @default(autoincrement())
-  accion String? @db.VarChar(50)
-}
-
-model PU_TiposContacto {
-  id           Int            @id(map: "PK__PU_Tipos__3213E83F6C42DCA1") @default(autoincrement())
-  tipoContacto String         @db.VarChar(50)
-  PU_Contactos PU_Contactos[]
-}
-
-model PU_TiposDocumento {
-  id            Int             @id(map: "PK__PU_Tipos__3213E83FE4FEA5D7") @default(autoincrement())
-  tipoDocumento String          @db.VarChar(50)
-  PU_Documentos PU_Documentos[]
-}
-
-model PU_TiposOrigen {
-  id                Int                 @id(map: "PK__PU_Tipos__3213E83F29DD9857") @default(autoincrement())
-  tipoOrigen        String              @db.VarChar(50)
-  PU_Contactos      PU_Contactos[]
-  PU_Correos        PU_Correos[]
-  PU_Direcciones    PU_Direcciones[]
-  PU_Empleos        PU_Empleos[]
-  PU_ReferenciasWeb PU_ReferenciasWeb[]
-  PU_Telefonos      PU_Telefonos[]
-}
-
-model PU_TiposPaginaWeb {
-  id                Int                 @id(map: "PK__PU_Tipos__3213E83F48C22A24") @default(autoincrement())
-  tipoPaginaWeb     String              @db.VarChar(50)
-  PU_ReferenciasWeb PU_ReferenciasWeb[]
-}
-
-model PU_TiposPersona {
-  id          Int         @id(map: "PK__PU_Tipos__3213E83F899FBB0F") @default(autoincrement())
-  tipoPersona String      @db.VarChar(50)
-  PU_Perfil   PU_Perfil[]
-}
-
-model PU_TiposTabla {
-  id        Int    @id(map: "PK__PU_Tipos__3213E83F79CE93D0") @default(autoincrement())
-  tipoTabla String @db.VarChar(50)
-}
-
-model PU_TiposTelefono {
-  id           Int            @id(map: "PK__PU_Tipos__3213E83F79C5F1E8") @default(autoincrement())
-  tipoTelefono String         @db.VarChar(50)
-  PU_Telefonos PU_Telefonos[]
 }
 
 model reporte_bitacora {
@@ -3953,4 +3746,373 @@ model tuser_role {
   IC_Cobrador IC_Cobrador @relation(fields: [user_id], references: [idCobrador], onUpdate: NoAction, map: "fk_tuser_role__ic_cobrador")
 
   @@id([role_id, user_id], map: "pk_tuser_role")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model exl_temp_cartera_pr19535 {
+  process_id                       Int?
+  row_id                           Int
+  CAMPANA                          String? @db.VarChar(1250)
+  CAMPANA_ANT                      String? @map("CAMPANA ANT") @db.VarChar(1250)
+  CICLO                            String? @db.VarChar(1250)
+  COD_CLIENTE                      String? @map("COD CLIENTE") @db.VarChar(1250)
+  COD_CONTRATO                     String? @map("COD CONTRATO") @db.VarChar(1250)
+  COD_DEPARTAMENTO                 String? @map("COD DEPARTAMENTO") @db.VarChar(1250)
+  DEPARTAMENTO_DEFAULT             String? @map("DEPARTAMENTO DEFAULT") @db.VarChar(1250)
+  DES_CONTRATO                     String? @map("DES CONTRATO") @db.VarChar(1250)
+  DIRECCION_CASA1                  String? @map("DIRECCION CASA1") @db.VarChar(1250)
+  DIRECCION_CASA2                  String? @map("DIRECCION CASA2") @db.VarChar(1250)
+  DIRECCION_CASA3                  String? @map("DIRECCION CASA3") @db.VarChar(1250)
+  DIRECCION_DEFAULT                String? @map("DIRECCION DEFAULT") @db.VarChar(1250)
+  DIRECCION_OTRA1                  String? @map("DIRECCION OTRA1") @db.VarChar(1250)
+  DIRECCION_TRABAJO1               String? @map("DIRECCION TRABAJO1") @db.VarChar(1250)
+  DIRECCION_TRABAJO2               String? @map("DIRECCION TRABAJO2") @db.VarChar(1250)
+  DIRECCION_TRABAJO3               String? @map("DIRECCION TRABAJO3") @db.VarChar(1250)
+  DPI                              String? @db.VarChar(1250)
+  EMAIL                            String? @db.VarChar(1250)
+  ESTADO                           String? @db.VarChar(1250)
+  FEC_CARTERA                      String? @map("FEC CARTERA") @db.VarChar(1250)
+  FEC_CASTIGO                      String? @map("FEC CASTIGO") @db.VarChar(1250)
+  FEC_CREACION_CUENTA              String? @map("FEC CREACION CUENTA") @db.VarChar(1250)
+  FEC_INGRESO_CAMPANA              String? @map("FEC INGRESO CAMPANA") @db.VarChar(1250)
+  FEC_SALIDA_PROGRAMADA_CAMPANA    String? @map("FEC SALIDA PROGRAMADA CAMPANA") @db.VarChar(1250)
+  FEC_ULT_ACT_CM1                  String? @map("FEC ULT ACT CM1") @db.VarChar(1250)
+  FEC_ULT_ACT_CM2                  String? @map("FEC ULT ACT CM2") @db.VarChar(1250)
+  FEC_ULTIMO_PAGO_D                String? @map("FEC ULTIMO PAGO D") @db.VarChar(1250)
+  FEC_ULTIMO_PAGO_Q                String? @map("FEC ULTIMO PAGO Q") @db.VarChar(1250)
+  FEC_VENCIMIENTO_ORIGINAL         String? @map("FEC VENCIMIENTO ORIGINAL") @db.VarChar(1250)
+  GARANTIA_PROD                    String? @map("GARANTIA PROD") @db.VarChar(1250)
+  IND_CARTERA                      String? @map("IND CARTERA") @db.VarChar(1250)
+  INTERES_CASTIGO_D                String? @map("INTERES CASTIGO D") @db.VarChar(1250)
+  INTERES_CASTIGO_Q                String? @map("INTERES CASTIGO Q") @db.VarChar(1250)
+  MON_CAPITAL_CASTIGO_D            String? @map("MON CAPITAL CASTIGO D") @db.VarChar(1250)
+  MON_CAPITAL_CASTIGO_ORIGINAL_D   String? @map("MON CAPITAL CASTIGO ORIGINAL D") @db.VarChar(1250)
+  MON_CAPITAL_CASTIGO_ORIGINAL_Q   String? @map("MON CAPITAL CASTIGO ORIGINAL Q") @db.VarChar(1250)
+  MON_CAPITAL_CASTIGO_Q            String? @map("MON CAPITAL CASTIGO Q") @db.VarChar(1250)
+  MON_INTERES_CASTIGO_ORIGINAL_D   String? @map("MON INTERES CASTIGO ORIGINAL D") @db.VarChar(1250)
+  MON_INTERES_CASTIGO_ORIGINAL_Q   String? @map("MON INTERES CASTIGO ORIGINAL Q") @db.VarChar(1250)
+  MON_ULTIMO_PAGO_D                String? @map("MON ULTIMO PAGO D") @db.VarChar(1250)
+  MON_ULTIMO_PAGO_Q                String? @map("MON ULTIMO PAGO Q") @db.VarChar(1250)
+  MONTO_DESEMBOLSO                 String? @map("MONTO DESEMBOLSO") @db.VarChar(1250)
+  MONTO_TOTAL_Q                    String? @map("MONTO TOTAL Q") @db.VarChar(1250)
+  MUNICIPIO_DEFAULT                String? @map("MUNICIPIO DEFAULT") @db.VarChar(1250)
+  NIT                              String? @db.VarChar(1250)
+  NOMBRE                           String? @db.VarChar(1250)
+  NOMBRE_TRABAJO                   String? @map("NOMBRE TRABAJO") @db.VarChar(1250)
+  NUM_CUENTA                       String? @map("NUM CUENTA") @db.VarChar(1250)
+  NUM_DIAS_FALTANTES_SALIR_CAMPANA String? @map("NUM DIAS FALTANTES SALIR CAMPANA") @db.VarChar(1250)
+  NUM_TARJETA                      String? @map("NUM TARJETA") @db.VarChar(1250)
+  NUM_TELEFONO_DEFAULT             String? @map("NUM TELEFONO DEFAULT") @db.VarChar(1250)
+  PLAZO                            String? @db.VarChar(1250)
+  PORTAFOLIO                       String? @db.VarChar(1250)
+  PRODUCTO                         String? @db.VarChar(1250)
+  RANDOM_DIGIT                     String? @map("RANDOM DIGIT") @db.VarChar(1250)
+  REFERENCIA1                      String? @db.VarChar(1250)
+  REFERENCIA2                      String? @db.VarChar(1250)
+  REFERENCIA3                      String? @db.VarChar(1250)
+  SALDO_CASTIGO_D                  String? @map("SALDO CASTIGO D") @db.VarChar(1250)
+  SALDO_CASTIGO_Q                  String? @map("SALDO CASTIGO Q") @db.VarChar(1250)
+  SISTEMA                          String? @db.VarChar(1250)
+  TASA_INTERES                     String? @map("TASA INTERES") @db.VarChar(1250)
+  TELEFONO_CASA1                   String? @map("TELEFONO CASA1") @db.VarChar(1250)
+  TELEFONO_CASA2                   String? @map("TELEFONO CASA2") @db.VarChar(1250)
+  TELEFONO_CELULAR1                String? @map("TELEFONO CELULAR1") @db.VarChar(1250)
+  TELEFONO_CELULAR2                String? @map("TELEFONO CELULAR2") @db.VarChar(1250)
+  TELEFONO_OTRO1                   String? @map("TELEFONO OTRO1") @db.VarChar(1250)
+  TELEFONO_OTRO2                   String? @map("TELEFONO OTRO2") @db.VarChar(1250)
+  TELEFONO_REFERENCIA_1            String? @map("TELEFONO REFERENCIA 1") @db.VarChar(1250)
+  TELEFONO_REFERENCIA2             String? @map("TELEFONO REFERENCIA2") @db.VarChar(1250)
+  TELEFONO_REFERENCIA3             String? @map("TELEFONO REFERENCIA3") @db.VarChar(1250)
+  TELEFONO_TRABAJO1                String? @map("TELEFONO TRABAJO1") @db.VarChar(1250)
+  TELEFONO_TRABAJO2                String? @map("TELEFONO TRABAJO2") @db.VarChar(1250)
+  TIPO_PRODUCTO                    String? @map("TIPO PRODUCTO") @db.VarChar(1250)
+  ULT_TIP_PRI_PRO_CM1              String? @map("ULT TIP PRI PRO CM1") @db.VarChar(1250)
+  ULT_TIP_PRI_PRO_CM2              String? @map("ULT TIP PRI PRO CM2") @db.VarChar(1250)
+  VECTOR_D                         String? @map("VECTOR D") @db.VarChar(1250)
+  VECTOR_Q                         String? @map("VECTOR Q") @db.VarChar(1250)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model exl_temp_pagos_BAM19540 {
+  process_id             Int?
+  row_id                 Int
+  Campana_Inicial        String? @map("_Campana Inicial") @db.VarChar(1250)
+  Identificacion         String? @map("_Identificacion") @db.VarChar(1250)
+  Nombre                 String? @map("_Nombre") @db.VarChar(1250)
+  Nombre_usuario_Inicial String? @map("_Nombre usuario Inicial") @db.VarChar(1250)
+  Operacion_o_TC         String? @map("_Operacion o TC") @db.VarChar(1250)
+  EMPRESA                String? @db.VarChar(1250)
+  ESTATUS                String? @db.VarChar(1250)
+  F100                   String? @db.VarChar(1250)
+  F101                   String? @db.VarChar(1250)
+  F102                   String? @db.VarChar(1250)
+  F103                   String? @db.VarChar(1250)
+  F104                   String? @db.VarChar(1250)
+  F105                   String? @db.VarChar(1250)
+  F106                   String? @db.VarChar(1250)
+  F107                   String? @db.VarChar(1250)
+  F108                   String? @db.VarChar(1250)
+  F109                   String? @db.VarChar(1250)
+  F30                    String? @db.VarChar(1250)
+  F31                    String? @db.VarChar(1250)
+  F32                    String? @db.VarChar(1250)
+  F33                    String? @db.VarChar(1250)
+  F34                    String? @db.VarChar(1250)
+  F35                    String? @db.VarChar(1250)
+  F36                    String? @db.VarChar(1250)
+  F37                    String? @db.VarChar(1250)
+  F38                    String? @db.VarChar(1250)
+  F39                    String? @db.VarChar(1250)
+  F40                    String? @db.VarChar(1250)
+  F41                    String? @db.VarChar(1250)
+  F42                    String? @db.VarChar(1250)
+  F43                    String? @db.VarChar(1250)
+  F44                    String? @db.VarChar(1250)
+  F45                    String? @db.VarChar(1250)
+  F46                    String? @db.VarChar(1250)
+  F47                    String? @db.VarChar(1250)
+  F48                    String? @db.VarChar(1250)
+  F49                    String? @db.VarChar(1250)
+  F50                    String? @db.VarChar(1250)
+  F51                    String? @db.VarChar(1250)
+  F52                    String? @db.VarChar(1250)
+  F53                    String? @db.VarChar(1250)
+  F54                    String? @db.VarChar(1250)
+  F55                    String? @db.VarChar(1250)
+  F56                    String? @db.VarChar(1250)
+  F57                    String? @db.VarChar(1250)
+  F58                    String? @db.VarChar(1250)
+  F59                    String? @db.VarChar(1250)
+  F60                    String? @db.VarChar(1250)
+  F61                    String? @db.VarChar(1250)
+  F62                    String? @db.VarChar(1250)
+  F63                    String? @db.VarChar(1250)
+  F64                    String? @db.VarChar(1250)
+  F65                    String? @db.VarChar(1250)
+  F66                    String? @db.VarChar(1250)
+  F67                    String? @db.VarChar(1250)
+  F68                    String? @db.VarChar(1250)
+  F69                    String? @db.VarChar(1250)
+  F70                    String? @db.VarChar(1250)
+  F71                    String? @db.VarChar(1250)
+  F72                    String? @db.VarChar(1250)
+  F73                    String? @db.VarChar(1250)
+  F74                    String? @db.VarChar(1250)
+  F75                    String? @db.VarChar(1250)
+  F76                    String? @db.VarChar(1250)
+  F77                    String? @db.VarChar(1250)
+  F78                    String? @db.VarChar(1250)
+  F79                    String? @db.VarChar(1250)
+  F80                    String? @db.VarChar(1250)
+  F81                    String? @db.VarChar(1250)
+  F82                    String? @db.VarChar(1250)
+  F83                    String? @db.VarChar(1250)
+  F84                    String? @db.VarChar(1250)
+  F85                    String? @db.VarChar(1250)
+  F86                    String? @db.VarChar(1250)
+  F87                    String? @db.VarChar(1250)
+  F88                    String? @db.VarChar(1250)
+  F89                    String? @db.VarChar(1250)
+  F90                    String? @db.VarChar(1250)
+  F91                    String? @db.VarChar(1250)
+  F92                    String? @db.VarChar(1250)
+  F93                    String? @db.VarChar(1250)
+  F94                    String? @db.VarChar(1250)
+  F95                    String? @db.VarChar(1250)
+  F96                    String? @db.VarChar(1250)
+  F97                    String? @db.VarChar(1250)
+  F98                    String? @db.VarChar(1250)
+  F99                    String? @db.VarChar(1250)
+  Moneda_Original        String? @map("Moneda Original") @db.VarChar(1250)
+  objetivo__             String? @map("objetivo $") @db.VarChar(1250)
+  ReduccionSaldos        String? @db.VarChar(1250)
+  Saldo_inicial__        String? @map("Saldo inicial $") @db.VarChar(1250)
+  TasaCambio             String? @db.VarChar(1250)
+  TOTAL_01               String? @map("TOTAL 01") @db.VarChar(1250)
+  TOTAL_02               String? @map("TOTAL 02") @db.VarChar(1250)
+  TOTAL_03               String? @map("TOTAL 03") @db.VarChar(1250)
+  TOTAL_04               String? @map("TOTAL 04") @db.VarChar(1250)
+  TOTAL_05               String? @map("TOTAL 05") @db.VarChar(1250)
+  TOTAL_06               String? @map("TOTAL 06") @db.VarChar(1250)
+  TOTAL_07               String? @map("TOTAL 07") @db.VarChar(1250)
+  TOTAL_08               String? @map("TOTAL 08") @db.VarChar(1250)
+  TOTAL_09               String? @map("TOTAL 09") @db.VarChar(1250)
+  TOTAL_11               String? @map("TOTAL 11") @db.VarChar(1250)
+  TOTAL_12               String? @map("TOTAL 12") @db.VarChar(1250)
+  TOTAL_13               String? @map("TOTAL 13") @db.VarChar(1250)
+  TOTAL_14               String? @map("TOTAL 14") @db.VarChar(1250)
+  TOTAL_15               String? @map("TOTAL 15") @db.VarChar(1250)
+  TOTAL_16               String? @map("TOTAL 16") @db.VarChar(1250)
+  TOTAL_17               String? @map("TOTAL 17") @db.VarChar(1250)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model exl_temp_pagos_BAM19585 {
+  process_id             Int?
+  row_id                 Int
+  Campana_Inicial        String? @map("_Campana Inicial") @db.VarChar(1250)
+  Identificacion         String? @map("_Identificacion") @db.VarChar(1250)
+  Nombre                 String? @map("_Nombre") @db.VarChar(1250)
+  Nombre_usuario_Inicial String? @map("_Nombre usuario Inicial") @db.VarChar(1250)
+  Operacion_o_TC         String? @map("_Operacion o TC") @db.VarChar(1250)
+  EMPRESA                String? @db.VarChar(1250)
+  ESTATUS                String? @db.VarChar(1250)
+  F100                   String? @db.VarChar(1250)
+  F101                   String? @db.VarChar(1250)
+  F102                   String? @db.VarChar(1250)
+  F103                   String? @db.VarChar(1250)
+  F104                   String? @db.VarChar(1250)
+  F105                   String? @db.VarChar(1250)
+  F106                   String? @db.VarChar(1250)
+  F107                   String? @db.VarChar(1250)
+  F108                   String? @db.VarChar(1250)
+  F109                   String? @db.VarChar(1250)
+  F31                    String? @db.VarChar(1250)
+  F32                    String? @db.VarChar(1250)
+  F33                    String? @db.VarChar(1250)
+  F34                    String? @db.VarChar(1250)
+  F35                    String? @db.VarChar(1250)
+  F36                    String? @db.VarChar(1250)
+  F37                    String? @db.VarChar(1250)
+  F38                    String? @db.VarChar(1250)
+  F39                    String? @db.VarChar(1250)
+  F40                    String? @db.VarChar(1250)
+  F41                    String? @db.VarChar(1250)
+  F42                    String? @db.VarChar(1250)
+  F43                    String? @db.VarChar(1250)
+  F44                    String? @db.VarChar(1250)
+  F45                    String? @db.VarChar(1250)
+  F46                    String? @db.VarChar(1250)
+  F47                    String? @db.VarChar(1250)
+  F48                    String? @db.VarChar(1250)
+  F49                    String? @db.VarChar(1250)
+  F50                    String? @db.VarChar(1250)
+  F51                    String? @db.VarChar(1250)
+  F52                    String? @db.VarChar(1250)
+  F53                    String? @db.VarChar(1250)
+  F54                    String? @db.VarChar(1250)
+  F55                    String? @db.VarChar(1250)
+  F56                    String? @db.VarChar(1250)
+  F57                    String? @db.VarChar(1250)
+  F58                    String? @db.VarChar(1250)
+  F59                    String? @db.VarChar(1250)
+  F60                    String? @db.VarChar(1250)
+  F61                    String? @db.VarChar(1250)
+  F62                    String? @db.VarChar(1250)
+  F63                    String? @db.VarChar(1250)
+  F64                    String? @db.VarChar(1250)
+  F65                    String? @db.VarChar(1250)
+  F66                    String? @db.VarChar(1250)
+  F67                    String? @db.VarChar(1250)
+  F68                    String? @db.VarChar(1250)
+  F69                    String? @db.VarChar(1250)
+  F70                    String? @db.VarChar(1250)
+  F71                    String? @db.VarChar(1250)
+  F72                    String? @db.VarChar(1250)
+  F73                    String? @db.VarChar(1250)
+  F74                    String? @db.VarChar(1250)
+  F75                    String? @db.VarChar(1250)
+  F76                    String? @db.VarChar(1250)
+  F77                    String? @db.VarChar(1250)
+  F78                    String? @db.VarChar(1250)
+  F79                    String? @db.VarChar(1250)
+  F80                    String? @db.VarChar(1250)
+  F81                    String? @db.VarChar(1250)
+  F82                    String? @db.VarChar(1250)
+  F83                    String? @db.VarChar(1250)
+  F84                    String? @db.VarChar(1250)
+  F85                    String? @db.VarChar(1250)
+  F86                    String? @db.VarChar(1250)
+  F87                    String? @db.VarChar(1250)
+  F88                    String? @db.VarChar(1250)
+  F89                    String? @db.VarChar(1250)
+  F90                    String? @db.VarChar(1250)
+  F91                    String? @db.VarChar(1250)
+  F92                    String? @db.VarChar(1250)
+  F93                    String? @db.VarChar(1250)
+  F94                    String? @db.VarChar(1250)
+  F95                    String? @db.VarChar(1250)
+  F96                    String? @db.VarChar(1250)
+  F97                    String? @db.VarChar(1250)
+  F98                    String? @db.VarChar(1250)
+  F99                    String? @db.VarChar(1250)
+  Moneda_Original        String? @map("Moneda Original") @db.VarChar(1250)
+  objetivo__             String? @map("objetivo $") @db.VarChar(1250)
+  ReduccionSaldos        String? @db.VarChar(1250)
+  Saldo_inicial__        String? @map("Saldo inicial $") @db.VarChar(1250)
+  TasaCambio             String? @db.VarChar(1250)
+  TOTAL_01               String? @map("TOTAL 01") @db.VarChar(1250)
+  TOTAL_02               String? @map("TOTAL 02") @db.VarChar(1250)
+  TOTAL_03               String? @map("TOTAL 03") @db.VarChar(1250)
+  TOTAL_04               String? @map("TOTAL 04") @db.VarChar(1250)
+  TOTAL_05               String? @map("TOTAL 05") @db.VarChar(1250)
+  TOTAL_06               String? @map("TOTAL 06") @db.VarChar(1250)
+  TOTAL_07               String? @map("TOTAL 07") @db.VarChar(1250)
+  TOTAL_08               String? @map("TOTAL 08") @db.VarChar(1250)
+  TOTAL_09               String? @map("TOTAL 09") @db.VarChar(1250)
+  TOTAL_10               String? @map("TOTAL 10") @db.VarChar(1250)
+  TOTAL_11               String? @map("TOTAL 11") @db.VarChar(1250)
+  TOTAL_12               String? @map("TOTAL 12") @db.VarChar(1250)
+  TOTAL_13               String? @map("TOTAL 13") @db.VarChar(1250)
+  TOTAL_14               String? @map("TOTAL 14") @db.VarChar(1250)
+  TOTAL_15               String? @map("TOTAL 15") @db.VarChar(1250)
+  TOTAL_16               String? @map("TOTAL 16") @db.VarChar(1250)
+  TOTAL_17               String? @map("TOTAL 17") @db.VarChar(1250)
+  TOTAL_18               String? @map("TOTAL 18") @db.VarChar(1250)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model exl_temp_pagos_CHEPE19553 {
+  process_id            Int?
+  row_id                Int
+  Pago_Con_IVA          String? @map("$ Pago Con IVA") @db.VarChar(1250)
+  Reversiones_Con_IVA   String? @map("$ Reversiones Con IVA") @db.VarChar(1250)
+  Agrupador             String? @db.VarChar(1250)
+  Codigo_de_Transaccion String? @map("Codigo de Transaccion") @db.VarChar(1250)
+  Fecha_Contable        String? @map("Fecha Contable") @db.VarChar(1250)
+  Fecha_de_Pago         String? @map("Fecha de Pago") @db.VarChar(1250)
+  GC                    String? @db.VarChar(1250)
+  Marca                 String? @db.VarChar(1250)
+  Mes                   String? @db.VarChar(1250)
+  Moneda                String? @db.VarChar(1250)
+  Pagare                String? @db.VarChar(1250)
+  Q_Pago_Con_IVA        String? @map("Q Pago Con IVA") @db.VarChar(1250)
+  Q_Reversiones_Con_IVA String? @map("Q Reversiones Con IVA") @db.VarChar(1250)
+  Supervisor            String? @db.VarChar(1250)
+  Tasa_de_Cambio        String? @map("Tasa de Cambio") @db.VarChar(1250)
+  Tipo                  String? @db.VarChar(1250)
+  Tipo_de_Transaccion   String? @map("Tipo de Transaccion") @db.VarChar(1250)
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model exl_temp_pagos_CHEPE19614 {
+  process_id            Int?
+  row_id                Int
+  Pago_Con_IVA          String? @map("$ Pago Con IVA") @db.VarChar(1250)
+  Reversiones_Con_IVA   String? @map("$ Reversiones Con IVA") @db.VarChar(1250)
+  Agrupador             String? @db.VarChar(1250)
+  Codigo_de_Transaccion String? @map("Codigo de Transaccion") @db.VarChar(1250)
+  Fecha_Contable        String? @map("Fecha Contable") @db.VarChar(1250)
+  Fecha_de_Pago         String? @map("Fecha de Pago") @db.VarChar(1250)
+  GC                    String? @db.VarChar(1250)
+  Marca                 String? @db.VarChar(1250)
+  Mes                   String? @db.VarChar(1250)
+  Moneda                String? @db.VarChar(1250)
+  Pagare                String? @db.VarChar(1250)
+  Q_Pago_Con_IVA        String? @map("Q Pago Con IVA") @db.VarChar(1250)
+  Q_Reversiones_Con_IVA String? @map("Q Reversiones Con IVA") @db.VarChar(1250)
+  Supervisor            String? @db.VarChar(1250)
+  Tasa_de_Cambio        String? @map("Tasa de Cambio") @db.VarChar(1250)
+  Tipo                  String? @db.VarChar(1250)
+  Tipo_de_Transaccion   String? @map("Tipo de Transaccion") @db.VarChar(1250)
+
+  @@ignore
 }

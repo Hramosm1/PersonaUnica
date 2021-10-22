@@ -4,4 +4,5 @@ web.config
 package-lock.json
 yarn.lock
 .env
-./dist
+/dist
+/prisma
