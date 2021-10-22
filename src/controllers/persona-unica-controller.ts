@@ -119,42 +119,44 @@ export class PersonaUnicaController {
           nombreEjecutivo: req.body.nombreEjecutivo,
         },
       });
-
-      for await (const i of nombres) {
-        prisma.pU_Nombres.create({ data: { idPerfil: id, ...nombres[i] } });
-      }
-      for await (const i of correos) {
-        prisma.pU_Correos.create({ data: { idPerfil: id, ...correos[i] } });
-      }
-      for await (const i of empleos) {
-        await prisma.pU_Empleos.create({
-          data: { idPerfil: id, ...empleos[i] },
+      for (let i = 0; i < nombres.length; i++) {
+        const data = nombres[i];
+        await prisma.pU_Nombres.create({
+          data: { idPerfil: id, nombre: data },
         });
       }
-      for await (const i of documentos) {
-        prisma.pU_Documentos.create({
-          data: { idPerfil: id, ...documentos[i] },
-        });
+      for (let i = 0; i < correos.length; i++) {
+        const data = correos[i];
+        await prisma.pU_Correos.create({ data: { idPerfil: id, ...data } });
       }
-      for await (const i of telefonos) {
-        prisma.pU_Telefonos.create({ data: { idPerfil: id, ...telefonos[i] } });
+      for (let i = 0; i < empleos.length; i++) {
+        const data = empleos[i];
+        await prisma.pU_Empleos.create({ data: { idPerfil: id, ...data } });
       }
-      for await (const i of direcciones) {
-        prisma.pU_Direcciones.create({
-          data: { idPerfil: id, ...direcciones[i] },
-        });
+      for (let i = 0; i < documentos.length; i++) {
+        const data = documentos[i];
+        await prisma.pU_Documentos.create({ data: { idPerfil: id, ...data } });
       }
-      for await (const i of contactos) {
-        prisma.pU_Contactos.create({ data: { idPerfil: id, ...contactos[i] } });
+      for (let i = 0; i < telefonos.length; i++) {
+        const data = telefonos[i];
+        await prisma.pU_Telefonos.create({ data: { idPerfil: id, ...data } });
       }
-      for await (const i of referenciasWeb) {
-        prisma.pU_ReferenciasWeb.create({
-          data: { idPerfil: id, ...referenciasWeb[i] },
+      for (let i = 0; i < direcciones.length; i++) {
+        const data = direcciones[i];
+        await prisma.pU_Direcciones.create({ data: { idPerfil: id, ...data } });
+      }
+      for (let i = 0; i < contactos.length; i++) {
+        const data = contactos[i];
+        await prisma.pU_Contactos.create({ data: { idPerfil: id, ...data } });
+      }
+      for (let i = 0; i < referenciasWeb.length; i++) {
+        const data = referenciasWeb[i];
+        await prisma.pU_ReferenciasWeb.create({
+          data: { idPerfil: id, ...data },
         });
       }
       res.send({ error: false, mensaje: "respuesta ingresada" });
     } catch (error: any) {
-      console.error(error);
       res.send({ error: true, mensaje: error.message });
     }
   }
