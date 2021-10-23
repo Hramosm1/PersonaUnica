@@ -126,7 +126,7 @@ export class PersonaUnicaController {
       try {
         const { id } = await prisma.pU_Perfil.create({
           data: {
-            primerApellido: req.body.segundoApellido,
+            primerApellido: req.body.primerApellido,
             segundoApellido: req.body.segundoApellido,
             genero: req.body.genero,
             tipo: req.body.tipo,
