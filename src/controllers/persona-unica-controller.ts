@@ -6,49 +6,47 @@ export class PersonaUnicaController {
     const prisma = new PrismaClient();
     const { id } = req.params;
     try {
-      const result = await prisma.pU_Perfil.findUnique({
-        select: {
-          genero: true,
-          fecha: true,
-          primerApellido: true,
-          segundoApellido: true,
-          PU_Nombres: true,
-          PU_Contactos: true,
-          PU_Correos: true,
-          PU_Direcciones: true,
-          PU_Documentos: true,
-          PU_Telefonos: true,
-          PU_ReferenciasWeb: true,
-          PU_Empleos_PU_Empleos_idPerfilToPU_Perfil: true,
-          personaUnica: true,
-          observaciones: true,
-          razonSocial: true,
-          id: true,
-        },
-        where: { id: id },
-      });
-      if (result?.PU_Empleos_PU_Empleos_idPerfilToPU_Perfil.length) {
-        const { PU_Empleos_PU_Empleos_idPerfilToPU_Perfil } = result;
-        let empresas = PU_Empleos_PU_Empleos_idPerfilToPU_Perfil;
+      const perfil: object[] = await prisma.$queryRawUnsafe(
+        `SELECT genero, fecha, primerApellido, segundoApellido, personaUnica, razonSocial, observaciones FROM PU_Perfil WHERE id = '${id}'`
+      );
+      const nombres = await prisma.$queryRawUnsafe(
+        `SELECT id, nombre FROM PU_Nombres WHERE idPerfil = '${id}'`
+      );
+      const contactos = await prisma.$queryRawUnsafe(
+        `SELECT c.id, c.nombreCompleto, o.tipoOrigen AS origenInformacion, t.tipoContacto FROM PU_Contactos AS c INNER JOIN PU_TiposOrigen AS o ON c.origenInformacion = o.id INNER JOIN PU_TiposContacto AS t ON c.tipoContacto = t.id WHERE idPerfil = '${id}'`
+      );
+      const correos = await prisma.$queryRawUnsafe(
+        `SELECT c.id, c.correo, t.tipoOrigen AS origenInformacion FROM PU_Correos AS c INNER JOIN PU_TiposOrigen AS t ON c.origenInformacion = t.id WHERE idPerfil = '${id}'`
+      );
+      const direcciones = await prisma.$queryRawUnsafe(
+        `SELECT d.id, d.departamento, d.municipio, d.zona, d.colonia, d.direccion, d.referencia, o.tipoOrigen AS origenInformacion FROM PU_Direcciones AS d INNER JOIN PU_TiposOrigen AS o ON d.origenInformacion = o.id WHERE idPerfil = '${id}'`
+      );
+      const documentos = await prisma.$queryRawUnsafe(
+        `SELECT d.id, d.documento, t.tipoDocumento AS tipo FROM PU_Documentos AS d INNER JOIN PU_TiposDocumento AS t ON d.tipo = t.id WHERE idPerfil = '${id}'`
+      );
+      const telefonos = await prisma.$queryRawUnsafe(
+        `SELECT t.id, t.codigoPais, t.telefono, tt.tipoTelefono AS tipoTelefono, o.tipoOrigen AS origenInformacion FROM PU_Telefonos AS t INNER JOIN PU_TiposTelefono AS tt ON t.tipoTelefono = tt.id INNER JOIN PU_TiposOrigen AS o ON t.origenInformacion = o.id WHERE idPerfil = '${id}'`
+      );
+      const referenciasWeb = await prisma.$queryRawUnsafe(
+        `SELECT r.id, r.link, tp.tipoPaginaWeb AS tipo, o.tipoOrigen AS origenInformacion FROM PU_ReferenciasWeb AS r INNER JOIN PU_TiposPaginaWeb AS tp ON r.tipo = tp.id INNER JOIN PU_TiposOrigen AS o ON r.origenInformacion = o.id WHERE idPerfil = '${id}'`
+      );
+      const empleos = await prisma.$queryRawUnsafe(
+        `SELECT e.id, p.razonSocial AS empresa, e.puesto, e.fechaInicio, e.fechaFin, o.tipoOrigen AS origenInformacion FROM PU_Empleos AS e INNER JOIN PU_TiposOrigen AS o ON e.origenInformacion = o.id INNER JOIN PU_Perfil AS p ON e.empresa = p.id WHERE idPerfil = '${id}'`
+      );
 
-        for (let index = 0; index < empresas.length; index++) {
-          const emp = empresas[index];
-          const nombre = await prisma.pU_Perfil.findUnique({
-            where: { id: emp.empresa },
-            select: { razonSocial: true },
-          });
-          if (nombre?.razonSocial) {
-            empresas[index].empresa = nombre.razonSocial;
-          }
-        }
-        const rem = {
-          empleos: empresas,
-          ...result,
-        };
-        res.send(rem);
-      } else {
-        res.send(result);
-      }
+      const result = {
+        id: id,
+        nombres: nombres,
+        contactos: contactos,
+        correos: correos,
+        direcciones: direcciones,
+        documentos: documentos,
+        telefonos: telefonos,
+        referenciasWeb: referenciasWeb,
+        empleos: empleos,
+        ...perfil[0],
+      };
+      res.send(result);
     } catch (error: any) {
       console.error(error);
       res.send({ error: true, mensaje: error.message });
@@ -123,6 +121,7 @@ export class PersonaUnicaController {
         mensaje: "ya existe un perfil con ese documento",
       });
     } else {
+      const date = req.body.fecha == "" ? null : req.body.fecha;
       try {
         const { id } = await prisma.pU_Perfil.create({
           data: {
@@ -131,7 +130,7 @@ export class PersonaUnicaController {
             genero: req.body.genero,
             tipo: req.body.tipo,
             razonSocial: req.body.razonSocial,
-            fecha: req.body.fecha,
+            fecha: date,
             observaciones: req.body.observaciones,
             personaUnica: req.body.personaUnica,
             nombreEjecutivo: req.body.nombreEjecutivo,
