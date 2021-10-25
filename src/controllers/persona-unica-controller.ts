@@ -7,7 +7,7 @@ export class PersonaUnicaController {
     const { id } = req.params;
     try {
       const perfil: object[] = await prisma.$queryRawUnsafe(
-        `SELECT genero, fecha, primerApellido, segundoApellido, personaUnica, razonSocial, observaciones FROM PU_Perfil WHERE id = '${id}'`
+        `SELECT genero, CONVERT(varchar, fecha, 103) AS fecha, primerApellido, segundoApellido, personaUnica, razonSocial, observaciones FROM PU_Perfil WHERE id = '${id}'`
       );
       const nombres = await prisma.$queryRawUnsafe(
         `SELECT id, nombre FROM PU_Nombres WHERE idPerfil = '${id}'`
@@ -56,9 +56,17 @@ export class PersonaUnicaController {
     const prisma = new PrismaClient();
     try {
       const result: any[] = await prisma.$queryRawUnsafe(
-        "SELECT p.id, p.primerApellido, p.segundoApellido, p.fecha, p.razonSocial, (SELECT TOP 1 documento FROM PU_Documentos WHERE idPerfil = p.id) AS documento, t.tipoPersona FROM PU_Perfil as p INNER JOIN PU_TiposPersona AS t ON p.tipo = t.id "
+        "SELECT p.id, p.primerApellido, p.segundoApellido, p.razonSocial, (SELECT TOP 1 documento FROM PU_Documentos WHERE idPerfil = p.id) AS documento, t.tipoPersona FROM PU_Perfil as p INNER JOIN PU_TiposPersona AS t ON p.tipo = t.id "
       );
-      res.send(result);
+      const resultNames = await prisma.pU_Nombres.findMany();
+      const resultWithNames = result.map((perfil) => {
+        const listNames = resultNames.filter(
+          (nom) => nom.idPerfil == perfil.id
+        );
+        const nombres = listNames.map((n) => n.nombre).join(" ");
+        return { ...perfil, nombres };
+      });
+      res.send(resultWithNames);
     } catch (error: any) {
       console.error(error);
       res.send({ error: true, mensaje: error.message });

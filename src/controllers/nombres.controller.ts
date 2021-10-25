@@ -14,11 +14,10 @@ export class NombresController {
   }
   async update(req: Request, res: Response) {
     const prisma = new PrismaClient();
-    const { body } = req;
     const { id } = req.params;
     try {
       const response = await prisma.pU_Nombres.update({
-        data: body,
+        data: req.body,
         where: { id: id },
       });
       res.send(response);
