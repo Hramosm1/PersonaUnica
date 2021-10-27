@@ -13,7 +13,7 @@ export class PersonaUnicaController {
         `SELECT id, nombre FROM PU_Nombres WHERE idPerfil = '${id}'`
       );
       const contactos = await prisma.$queryRawUnsafe(
-        `SELECT c.id, c.nombreCompleto, o.tipoOrigen AS origenInformacion, t.tipoContacto FROM PU_Contactos AS c INNER JOIN PU_TiposOrigen AS o ON c.origenInformacion = o.id INNER JOIN PU_TiposContacto AS t ON c.tipoContacto = t.id WHERE idPerfil = '${id}'`
+        `SELECT c.id, c.nombreCompleto, c.telefono, o.tipoOrigen AS origenInformacion, t.tipoContacto FROM PU_Contactos AS c INNER JOIN PU_TiposOrigen AS o ON c.origenInformacion = o.id INNER JOIN PU_TiposContacto AS t ON c.tipoContacto = t.id WHERE idPerfil = '${id}'`
       );
       const correos = await prisma.$queryRawUnsafe(
         `SELECT c.id, c.correo, t.tipoOrigen AS origenInformacion FROM PU_Correos AS c INNER JOIN PU_TiposOrigen AS t ON c.origenInformacion = t.id WHERE idPerfil = '${id}'`
