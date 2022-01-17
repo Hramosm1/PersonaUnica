@@ -1,7 +1,8 @@
 /node_modules
 /iisnode
+/dist
 web.config
 package-lock.json
-yarn.lock
+yarn*
 .env
-/dist
+notas.txt

@@ -8,7 +8,7 @@ datasource db {
 }
 
 model IC_Cobrador {
-  idCobrador     BigInt      @id(map: "PK__IC_Cobra__928D6DB7EEEACF1A")
+  idCobrador     BigInt      @id(map: "PK__IC_Cobra__928D6DB700B84914")
   Nombre         String?     @db.VarChar(100)
   Usuario        String?     @db.VarChar(50)
   estado         Boolean?
@@ -22,19 +22,19 @@ model IC_Cobrador {
 }
 
 model PU_Contactos {
-  id                String           @id(map: "PK__PU_Conta__3213E83FBEB4A006") @default(dbgenerated("newid()"), map: "DF__PU_Contactos__id__01142BA1") @db.UniqueIdentifier
+  id                String           @id(map: "PK__PU_Conta__3213E83FA1C780F5") @default(dbgenerated("newid()"), map: "DF__PU_Contactos__id__6FE99F9F") @db.UniqueIdentifier
   nombreCompleto    String           @db.VarChar(150)
   origenInformacion Int
   tipoContacto      Int
   idPerfil          String           @db.UniqueIdentifier
   telefono          String?          @db.VarChar(15)
-  PU_Perfil         PU_Perfil        @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__idPer__02084FDA")
-  PU_TiposOrigen    PU_TiposOrigen   @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__orige__02FC7413")
-  PU_TiposContacto  PU_TiposContacto @relation(fields: [tipoContacto], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__tipoC__03F0984C")
+  PU_Perfil         PU_Perfil        @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__idPer__70DDC3D8")
+  PU_TiposOrigen    PU_TiposOrigen   @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__orige__71D1E811")
+  PU_TiposContacto  PU_TiposContacto @relation(fields: [tipoContacto], references: [id], onUpdate: NoAction, map: "FK__PU_Contac__tipoC__72C60C4A")
 }
 
 model PU_Correos {
-  id                String         @id(map: "PK__PU_Corre__3213E83F80E0DACF") @default(dbgenerated("newid()"), map: "DF__PU_Correos__id__571DF1D5") @db.UniqueIdentifier
+  id                String         @id(map: "PK__PU_Corre__3213E83F9AE848AF") @default(dbgenerated("newid()"), map: "DF__PU_Correos__id__571DF1D5") @db.UniqueIdentifier
   correo            String         @db.VarChar(150)
   idPerfil          String         @db.UniqueIdentifier
   origenInformacion Int
@@ -43,7 +43,7 @@ model PU_Correos {
 }
 
 model PU_Direcciones {
-  id                String         @id(map: "PK__PU_Direc__3213E83F7FD3C01A") @default(dbgenerated("newid()"), map: "DF__PU_Direccion__id__6B24EA82") @db.UniqueIdentifier
+  id                String         @id(map: "PK__PU_Direc__3213E83F3DF5EC34") @default(dbgenerated("newid()"), map: "DF__PU_Direccion__id__6B24EA82") @db.UniqueIdentifier
   departamento      String         @db.VarChar(50)
   municipio         String         @db.VarChar(50)
   zona              Int
@@ -57,7 +57,7 @@ model PU_Direcciones {
 }
 
 model PU_Documentos {
-  id                String            @id(map: "PK__PU_Docum__3213E83F212D22A0") @default(dbgenerated("newid()"), map: "DF__PU_Documento__id__52593CB8") @db.UniqueIdentifier
+  id                String            @id(map: "PK__PU_Docum__3213E83FBDAEDF20") @default(dbgenerated("newid()"), map: "DF__PU_Documento__id__52593CB8") @db.UniqueIdentifier
   tipo              Int
   documento         String            @db.VarChar(25)
   idPerfil          String            @db.UniqueIdentifier
@@ -66,33 +66,33 @@ model PU_Documentos {
 }
 
 model PU_Empleos {
-  id                                       String         @id(map: "PK__PU_Emple__3213E83F4A394A0A") @default(dbgenerated("newid()"), map: "DF__PU_Empleos__id__7B5B524B") @db.UniqueIdentifier
+  id                                       String         @id(map: "PK__PU_Emple__3213E83F44C4613A") @default(dbgenerated("newid()"), map: "DF__PU_Empleos__id__656C112C") @db.UniqueIdentifier
   empresa                                  String         @db.UniqueIdentifier
   puesto                                   String         @db.VarChar(50)
   fechaInicio                              DateTime?      @db.Date
   fechaFin                                 DateTime?      @db.Date
   idPerfil                                 String         @db.UniqueIdentifier
   origenInformacion                        Int
-  PU_Perfil_PU_Empleos_empresaToPU_Perfil  PU_Perfil      @relation("PU_Empleos_empresaToPU_Perfil", fields: [empresa], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__empre__7E37BEF6")
-  PU_Perfil_PU_Empleos_idPerfilToPU_Perfil PU_Perfil      @relation("PU_Empleos_idPerfilToPU_Perfil", fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__idPer__7C4F7684")
-  PU_TiposOrigen                           PU_TiposOrigen @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__orige__7D439ABD")
+  PU_Perfil_PU_Empleos_empresaToPU_Perfil  PU_Perfil      @relation("PU_Empleos_empresaToPU_Perfil", fields: [empresa], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__empre__68487DD7")
+  PU_Perfil_PU_Empleos_idPerfilToPU_Perfil PU_Perfil      @relation("PU_Empleos_idPerfilToPU_Perfil", fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__idPer__66603565")
+  PU_TiposOrigen                           PU_TiposOrigen @relation(fields: [origenInformacion], references: [id], onUpdate: NoAction, map: "FK__PU_Empleo__orige__6754599E")
 }
 
 model PU_Generos {
-  id        Int         @id(map: "PK__PU_Gener__3213E83FF6CE7876") @default(autoincrement())
+  id        Int         @id(map: "PK__PU_Gener__3213E83F620A44A7") @default(autoincrement())
   genero    String      @db.VarChar(50)
   PU_Perfil PU_Perfil[]
 }
 
 model PU_Nombres {
-  id        String    @id(map: "PK__PU_Nombr__3213E83F0693C0FB") @default(dbgenerated("newid()"), map: "DF__PU_Nombres__id__619B8048") @db.UniqueIdentifier
+  id        String    @id(map: "PK__PU_Nombr__3213E83FC9537C1E") @default(dbgenerated("newid()"), map: "DF__PU_Nombres__id__619B8048") @db.UniqueIdentifier
   nombre    String    @db.VarChar(50)
   idPerfil  String    @db.UniqueIdentifier
   PU_Perfil PU_Perfil @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Nombre__idPer__628FA481")
 }
 
 model PU_Perfil {
-  id                                        String              @id(map: "PK__PU_Perfi__3213E83F6E74C101") @default(dbgenerated("newid()"), map: "DF__PU_Perfil__id__4AB81AF0") @db.UniqueIdentifier
+  id                                        String              @id(map: "PK__PU_Perfi__3213E83FF4143452") @default(dbgenerated("newid()"), map: "DF__PU_Perfil__id__4AB81AF0") @db.UniqueIdentifier
   genero                                    Int?
   primerApellido                            String?             @db.VarChar(50)
   segundoApellido                           String?             @db.VarChar(50)
@@ -117,7 +117,7 @@ model PU_Perfil {
 }
 
 model PU_ReferenciasWeb {
-  id                String            @id(map: "PK__PU_Refer__3213E83F42271C88") @default(dbgenerated("newid()"), map: "DF__PU_Referenci__id__75A278F5") @db.UniqueIdentifier
+  id                String            @id(map: "PK__PU_Refer__3213E83F543C09B4") @default(dbgenerated("newid()"), map: "DF__PU_Referenci__id__75A278F5") @db.UniqueIdentifier
   tipo              Int
   origenInformacion Int
   link              String            @db.VarChar(150)
@@ -128,7 +128,7 @@ model PU_ReferenciasWeb {
 }
 
 model PU_Telefonos {
-  id                String           @id(map: "PK__PU_Telef__3213E83FA6BB34D4") @default(dbgenerated("newid()"), map: "DF__PU_Telefonos__id__5BE2A6F2") @db.UniqueIdentifier
+  id                String           @id(map: "PK__PU_Telef__3213E83F8052860B") @default(dbgenerated("newid()"), map: "DF__PU_Telefonos__id__5BE2A6F2") @db.UniqueIdentifier
   codigoPais        String           @db.VarChar(10)
   telefono          String           @db.VarChar(15)
   tipoTelefono      Int
@@ -140,24 +140,24 @@ model PU_Telefonos {
 }
 
 model PU_TiposAccion {
-  id     Int     @id(map: "PK__PU_Tipos__3213E83F34EE6200") @default(autoincrement())
+  id     Int     @id(map: "PK__PU_Tipos__3213E83FF7FB0991") @default(autoincrement())
   accion String? @db.VarChar(50)
 }
 
 model PU_TiposContacto {
-  id           Int            @id(map: "PK__PU_Tipos__3213E83F08390558") @default(autoincrement())
+  id           Int            @id(map: "PK__PU_Tipos__3213E83FA0CABF9E") @default(autoincrement())
   tipoContacto String         @db.VarChar(50)
   PU_Contactos PU_Contactos[]
 }
 
 model PU_TiposDocumento {
-  id            Int             @id(map: "PK__PU_Tipos__3213E83F7C86612D") @default(autoincrement())
+  id            Int             @id(map: "PK__PU_Tipos__3213E83FAF5E62FA") @default(autoincrement())
   tipoDocumento String          @db.VarChar(50)
   PU_Documentos PU_Documentos[]
 }
 
 model PU_TiposOrigen {
-  id                Int                 @id(map: "PK__PU_Tipos__3213E83FB5A3E584") @default(autoincrement())
+  id                Int                 @id(map: "PK__PU_Tipos__3213E83FD322CC40") @default(autoincrement())
   tipoOrigen        String              @db.VarChar(50)
   PU_Contactos      PU_Contactos[]
   PU_Correos        PU_Correos[]
@@ -168,24 +168,24 @@ model PU_TiposOrigen {
 }
 
 model PU_TiposPaginaWeb {
-  id                Int                 @id(map: "PK__PU_Tipos__3213E83FE6262BFC") @default(autoincrement())
+  id                Int                 @id(map: "PK__PU_Tipos__3213E83FD7C2250D") @default(autoincrement())
   tipoPaginaWeb     String              @db.VarChar(50)
   PU_ReferenciasWeb PU_ReferenciasWeb[]
 }
 
 model PU_TiposPersona {
-  id          Int         @id(map: "PK__PU_Tipos__3213E83F60CE9570") @default(autoincrement())
+  id          Int         @id(map: "PK__PU_Tipos__3213E83F9264B320") @default(autoincrement())
   tipoPersona String      @db.VarChar(50)
   PU_Perfil   PU_Perfil[]
 }
 
 model PU_TiposTabla {
-  id        Int    @id(map: "PK__PU_Tipos__3213E83FF516DC56") @default(autoincrement())
+  id        Int    @id(map: "PK__PU_Tipos__3213E83FBD00939B") @default(autoincrement())
   tipoTabla String @db.VarChar(50)
 }
 
 model PU_TiposTelefono {
-  id           Int            @id(map: "PK__PU_Tipos__3213E83FFB306322") @default(autoincrement())
+  id           Int            @id(map: "PK__PU_Tipos__3213E83F1325A531") @default(autoincrement())
   tipoTelefono String         @db.VarChar(50)
   PU_Telefonos PU_Telefonos[]
 }
