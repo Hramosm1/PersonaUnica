@@ -19,7 +19,7 @@ export class LoginController {
       }
     } catch (error: any) {
       console.error(error);
-      res.send({ error: true, mensaje: error.message });
+      res.send({ error: true, mensaje: error.message, info: req.body });
     }
   }
 }

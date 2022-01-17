@@ -7,7 +7,20 @@ export class PersonaUnicaController {
     const { id } = req.params;
     try {
       const perfil: object[] = await prisma.$queryRawUnsafe(
-        `SELECT genero, CONVERT(varchar, fecha, 103) AS fecha, primerApellido, segundoApellido, personaUnica, razonSocial, observaciones FROM PU_Perfil WHERE id = '${id}'`
+        `SELECT 
+    p.genero, 
+    CONVERT(varchar, p.fecha, 103) AS fecha, 
+    p.primerApellido, 
+    p.segundoApellido, 
+    p.personaUnica, 
+    p.razonSocial, 
+    p.observaciones,
+    p.tipo,
+    tp.tipoPersona
+FROM PU_Perfil p
+INNER JOIN PU_TiposPersona tp
+ON p.tipo = tp.id
+WHERE p.id = '${id}'`
       );
       const nombres = await prisma.$queryRawUnsafe(
         `SELECT id, nombre FROM PU_Nombres WHERE idPerfil = '${id}'`
@@ -75,20 +88,18 @@ export class PersonaUnicaController {
   public async updatePerfil(req: Request, res: Response) {
     const prisma = new PrismaClient();
     const { id } = req.params;
-    let bod = req.body;
-    const dat = new Date(req.body.fecha).toLocaleDateString();
-    bod.fecha = dat;
     const {
       primerApellido,
       segundoApellido,
-      fecha,
       genero,
+      fecha,
       observaciones,
       razonSocial,
-    } = bod;
+    } = req.body;
+    const fFecha = fecha.split("/").reverse().join("");
     try {
       const result = await prisma.$queryRawUnsafe(
-        `UPDATE PU_Perfil SET primerApellido='${primerApellido}', segundoApellido='${segundoApellido}',fecha=convert(datetime, '${fecha}', 104)+1,genero=${genero},observaciones='${observaciones}',razonSocial='${razonSocial}' WHERE id ='${id}'`
+        `UPDATE PU_Perfil SET primerApellido='${primerApellido}', segundoApellido='${segundoApellido}',fecha='${fFecha}',genero=${genero},observaciones='${observaciones}',razonSocial='${razonSocial}' WHERE id ='${id}'`
       );
       res.send({ error: false, mensaje: result });
     } catch (error: any) {
