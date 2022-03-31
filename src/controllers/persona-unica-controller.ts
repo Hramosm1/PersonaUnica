@@ -1,5 +1,6 @@
 import { PrismaClient } from ".prisma/client";
 import { Request, Response } from "express";
+import { PerfilSinNombres } from "../interfaces/interfaces-perfiles";
 
 export class PersonaUnicaController {
   public async getOne(req: Request, res: Response) {
@@ -23,7 +24,7 @@ ON p.tipo = tp.id
 WHERE p.id = '${id}'`
       );
       const nombres = await prisma.$queryRawUnsafe(
-        `SELECT id, nombre FROM PU_Nombres WHERE idPerfil = '${id}'`
+        `SELECT id, nombre FROM PU_Nombres WHERE idPerfil = '${id}' ORDER BY orden`
       );
       const contactos = await prisma.$queryRawUnsafe(
         `SELECT c.id, c.nombreCompleto, c.telefono, o.tipoOrigen AS origenInformacion, t.tipoContacto FROM PU_Contactos AS c INNER JOIN PU_TiposOrigen AS o ON c.origenInformacion = o.id INNER JOIN PU_TiposContacto AS t ON c.tipoContacto = t.id WHERE idPerfil = '${id}'`
@@ -68,7 +69,7 @@ WHERE p.id = '${id}'`
   public async getAll(req: Request, res: Response) {
     const prisma = new PrismaClient();
     try {
-      const result: any[] = await prisma.$queryRawUnsafe(
+      const result: PerfilSinNombres[] = await prisma.$queryRawUnsafe(
         "SELECT p.id, p.primerApellido, p.segundoApellido, p.razonSocial, (SELECT TOP 1 documento FROM PU_Documentos WHERE idPerfil = p.id) AS documento, t.tipoPersona FROM PU_Perfil as p INNER JOIN PU_TiposPersona AS t ON p.tipo = t.id "
       );
       const resultNames = await prisma.pU_Nombres.findMany();
@@ -76,7 +77,7 @@ WHERE p.id = '${id}'`
         const listNames = resultNames.filter(
           (nom) => nom.idPerfil == perfil.id
         );
-        const nombres = listNames.map((n) => n.nombre).join(" ");
+        const nombres = listNames.sort((a, b) => a.orden - b.orden).map((n) => n.nombre).join(" ");
         return { ...perfil, nombres };
       });
       res.send(resultWithNames);
@@ -158,7 +159,7 @@ WHERE p.id = '${id}'`
         for (let i = 0; i < nombres.length; i++) {
           const data = nombres[i];
           await prisma.pU_Nombres.create({
-            data: { idPerfil: id, nombre: data },
+            data: { idPerfil: id, nombre: data, orden: i },
           });
         }
         for (let i = 0; i < correos.length; i++) {

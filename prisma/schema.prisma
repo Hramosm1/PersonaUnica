@@ -88,6 +88,7 @@ model PU_Nombres {
   id        String    @id(map: "PK__PU_Nombr__3213E83FC9537C1E") @default(dbgenerated("newid()"), map: "DF__PU_Nombres__id__619B8048") @db.UniqueIdentifier
   nombre    String    @db.VarChar(50)
   idPerfil  String    @db.UniqueIdentifier
+  orden     Int
   PU_Perfil PU_Perfil @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Nombre__idPer__628FA481")
 }
 
