@@ -1,9 +1,9 @@
-import { PrismaClient } from ".prisma/client";
+import { prisma } from "../database";
 import { Request, Response } from "express";
 
 export class CorreosController {
   async create(req: Request, res: Response) {
-    const prisma = new PrismaClient();
+
     const { body } = req;
     try {
       const response = await prisma.pU_Correos.create({ data: body });
@@ -13,7 +13,7 @@ export class CorreosController {
     }
   }
   async update(req: Request, res: Response) {
-    const prisma = new PrismaClient();
+
     const { body } = req;
     const { id } = req.params;
     try {
@@ -27,7 +27,7 @@ export class CorreosController {
     }
   }
   async delete(req: Request, res: Response) {
-    const prisma = new PrismaClient();
+
     const { id } = req.params;
     try {
       const response = await prisma.pU_Correos.delete({ where: { id: id } });
