@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../database";
 
 export class TiposController {
   /**
    * getGeneros
    */
   public async getGeneros(req: Request, res: Response) {
-    const prisma = new PrismaClient();
     try {
       const response = await prisma.pU_Generos.findMany();
       res.send(response);
@@ -15,7 +14,6 @@ export class TiposController {
     }
   }
   public async getTipoDocumento(req: Request, res: Response) {
-    const prisma = new PrismaClient();
     try {
       const response = await prisma.pU_TiposDocumento.findMany();
       res.send(response);
@@ -24,7 +22,6 @@ export class TiposController {
     }
   }
   public async getTipoPersona(req: Request, res: Response) {
-    const prisma = new PrismaClient();
     try {
       const response = await prisma.pU_TiposPersona.findMany();
       res.send(response);
@@ -33,7 +30,6 @@ export class TiposController {
     }
   }
   public async getTIpoContacto(req: Request, res: Response) {
-    const prisma = new PrismaClient();
     try {
       const response = await prisma.pU_TiposContacto.findMany();
       res.send(response);
@@ -42,7 +38,6 @@ export class TiposController {
     }
   }
   public async getTipoTelefono(req: Request, res: Response) {
-    const prisma = new PrismaClient();
     try {
       const response = await prisma.pU_TiposTelefono.findMany();
       res.send(response);
@@ -51,7 +46,6 @@ export class TiposController {
     }
   }
   public async getTipoOrigen(req: Request, res: Response) {
-    const prisma = new PrismaClient();
     try {
       const response = await prisma.pU_TiposOrigen.findMany();
       res.send(response);
@@ -60,7 +54,6 @@ export class TiposController {
     }
   }
   public async getTipoPaginaWeb(req: Request, res: Response) {
-    const prisma = new PrismaClient();
     try {
       const response = await prisma.pU_TiposPaginaWeb.findMany();
       res.send(response);

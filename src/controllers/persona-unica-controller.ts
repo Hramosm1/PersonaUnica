@@ -1,10 +1,10 @@
-import { PrismaClient } from ".prisma/client";
+import { prisma } from "../database";
 import { Request, Response } from "express";
 import { PerfilSinNombres } from "../interfaces/interfaces-perfiles";
 
 export class PersonaUnicaController {
   public async getOne(req: Request, res: Response) {
-    const prisma = new PrismaClient();
+
     const { id } = req.params;
     try {
       const perfil: object[] = await prisma.$queryRawUnsafe(
@@ -67,7 +67,7 @@ WHERE p.id = '${id}'`
     }
   }
   public async getAll(req: Request, res: Response) {
-    const prisma = new PrismaClient();
+
     try {
       const result: PerfilSinNombres[] = await prisma.$queryRawUnsafe(
         "SELECT p.id, p.primerApellido, p.segundoApellido, p.razonSocial, (SELECT TOP 1 documento FROM PU_Documentos WHERE idPerfil = p.id) AS documento, t.tipoPersona FROM PU_Perfil as p INNER JOIN PU_TiposPersona AS t ON p.tipo = t.id "
@@ -87,7 +87,7 @@ WHERE p.id = '${id}'`
     }
   }
   public async updatePerfil(req: Request, res: Response) {
-    const prisma = new PrismaClient();
+
     const { id } = req.params;
     const {
       primerApellido,
@@ -109,7 +109,7 @@ WHERE p.id = '${id}'`
     }
   }
   public async postData(req: Request, res: Response) {
-    const prisma = new PrismaClient();
+
     let existe = false;
     const {
       nombres,
