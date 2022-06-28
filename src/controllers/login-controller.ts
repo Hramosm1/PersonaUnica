@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { Token } from "../token";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../database";
 export class LoginController {
   public async login(req: Request, res: Response) {
-    const prisma = new PrismaClient();
+
     const _Token = new Token();
     const { username, password } = req.body;
     try {

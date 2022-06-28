@@ -8,16 +8,17 @@ datasource db {
 }
 
 model IC_Cobrador {
-  idCobrador     BigInt      @id(map: "PK__IC_Cobra__928D6DB700B84914")
-  Nombre         String?     @db.VarChar(100)
-  Usuario        String?     @db.VarChar(50)
+  idCobrador     BigInt        @id(map: "PK__IC_Cobra__928D6DB700B84914")
+  Nombre         String?       @db.VarChar(100)
+  Usuario        String?       @db.VarChar(50)
   estado         Boolean?
-  CoNombre       String?     @db.Char(50)
-  CoApellido     String?     @db.Char(50)
-  Password       Bytes?      @db.Binary(50)
+  CoNombre       String?       @db.Char(50)
+  CoApellido     String?       @db.Char(50)
+  Password       Bytes?        @db.Binary(50)
   superusuario   Boolean?
-  email          String?     @db.VarChar(50)
-  NombreCompleto String?     @db.VarChar(150)
+  email          String?       @db.VarChar(50)
+  NombreCompleto String?       @db.VarChar(150)
+  LogPerfiles    LogPerfiles[]
   PU_Perfil      PU_Perfil[]
 }
 
@@ -86,7 +87,7 @@ model PU_Generos {
 
 model PU_Nombres {
   id        String    @id(map: "PK__PU_Nombr__3213E83FC9537C1E") @default(dbgenerated("newid()"), map: "DF__PU_Nombres__id__619B8048") @db.UniqueIdentifier
-  nombre    String    @db.VarChar(50)
+  nombre    String    @db.VarChar(250)
   idPerfil  String    @db.UniqueIdentifier
   orden     Int
   PU_Perfil PU_Perfil @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__PU_Nombre__idPer__628FA481")
@@ -106,6 +107,7 @@ model PU_Perfil {
   PU_Generos                                PU_Generos?         @relation(fields: [genero], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__PU_Perfil__gener__4D94879B")
   IC_Cobrador                               IC_Cobrador         @relation(fields: [nombreEjecutivo], references: [idCobrador], onUpdate: NoAction, map: "FK__PU_Perfil__nombr__4F7CD00D")
   PU_TiposPersona                           PU_TiposPersona     @relation(fields: [tipo], references: [id], onUpdate: NoAction, map: "FK__PU_Perfil__tipo__4E88ABD4")
+  LogPerfiles                               LogPerfiles[]
   PU_Contactos                              PU_Contactos[]
   PU_Correos                                PU_Correos[]
   PU_Direcciones                            PU_Direcciones[]
@@ -189,4 +191,15 @@ model PU_TiposTelefono {
   id           Int            @id(map: "PK__PU_Tipos__3213E83F1325A531") @default(autoincrement())
   tipoTelefono String         @db.VarChar(50)
   PU_Telefonos PU_Telefonos[]
+}
+
+model LogPerfiles {
+  id          String      @id(map: "PK__LogPerfi__3213E83F526C6D45") @default(dbgenerated("newid()"), map: "DF__LogPerfiles__id__02FC7413") @db.UniqueIdentifier
+  idCobrador  BigInt
+  fecha       DateTime?   @default(now(), map: "DF__LogPerfil__fecha__03F0984C") @db.Date
+  accion      String      @db.VarChar(250)
+  idPerfil    String      @db.UniqueIdentifier
+  hora        DateTime?   @default(now(), map: "DF__LogPerfile__hora__14270015") @db.Time
+  IC_Cobrador IC_Cobrador @relation(fields: [idCobrador], references: [idCobrador], onUpdate: NoAction, map: "FK__LogPerfil__idCob__04E4BC85")
+  PU_Perfil   PU_Perfil   @relation(fields: [idPerfil], references: [id], onUpdate: NoAction, map: "FK__LogPerfil__idPer__05D8E0BE")
 }
