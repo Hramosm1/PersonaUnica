@@ -9,13 +9,14 @@
     "prod": "node dist/bundle.js"
   },
   "dependencies": {
-    "@prisma/client": "^3.3.0",
+    "@prisma/client": "^3.15.2",
+    "@types/node": "^18.0.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "msnodesqlv8": "^2.4.0",
     "mssql": "^7.2.1",
-    "prisma": "^3.3.0"
+    "prisma": "^3.15.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

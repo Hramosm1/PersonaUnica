@@ -1,6 +1,7 @@
 import { prisma } from "../database";
 import { Request, Response } from "express";
-import { PerfilSinNombres } from "../interfaces/interfaces-perfiles";
+import { Page, PerfilSinNombres } from "../interfaces/interfaces-perfiles";
+import { getQueryFilter } from "../core/util";
 
 export class PersonaUnicaController {
   public async getOne(req: Request, res: Response) {
@@ -67,20 +68,29 @@ WHERE p.id = '${id}'`
     }
   }
   public async getAll(req: Request, res: Response) {
-
+    const take = parseInt(req.params.take)
+    const pageNumber = parseInt(req.params.page)
+    const skip = take * pageNumber
+    const where = getQueryFilter(req.query)
     try {
-      const result: PerfilSinNombres[] = await prisma.$queryRawUnsafe(
-        "SELECT p.id, p.primerApellido, p.segundoApellido, p.razonSocial, (SELECT TOP 1 documento FROM PU_Documentos WHERE idPerfil = p.id) AS documento, t.tipoPersona FROM PU_Perfil as p INNER JOIN PU_TiposPersona AS t ON p.tipo = t.id "
-      );
-      const resultNames = await prisma.pU_Nombres.findMany();
-      const resultWithNames = result.map((perfil) => {
-        const listNames = resultNames.filter(
-          (nom) => nom.idPerfil == perfil.id
-        );
-        const nombres = listNames.sort((a, b) => a.orden - b.orden).map((n) => n.nombre).join(" ");
-        return { ...perfil, nombres };
-      });
-      res.send(resultWithNames);
+      const data = await prisma.pU_Perfil.findMany({
+        select: {
+          id: true,
+          primerApellido: true,
+          segundoApellido: true,
+          razonSocial: true,
+          PU_TiposPersona: { select: { tipoPersona: true } },
+          PU_Documentos: { take: 1, select: { documento: true } },
+          PU_Nombres: { select: { nombre: true }, orderBy: { orden: 'asc' } }
+        },
+        orderBy: [{ razonSocial: 'asc' }, { primerApellido: 'asc' }, { segundoApellido: 'asc' }],
+        skip,
+        take,
+        where
+      })
+      const totalElements = await prisma.pU_Perfil.count({ where })
+      const pageData: Page = { pageNumber, take, totalElements, totalPages: Math.ceil(totalElements / take) }
+      res.send({ pageData, data })
     } catch (error: any) {
       console.error(error);
       res.send({ error: true, mensaje: error.message });
