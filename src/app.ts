@@ -26,7 +26,7 @@ export class App {
   }
   //configuraciones del servidor
   private settings(): void {
-    this.app.set("port", 9421);
+    this.app.set("port", process.env.PORT || 9421);
   }
   //midlewares a implementar
   private midlewares(): void {
