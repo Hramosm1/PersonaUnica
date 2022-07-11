@@ -1,32 +1,32 @@
 import { request } from '../src/app'
 
-describe('/tipos Obtiene como resultado un array en las siguientes rutas', () => {
-  it("/genero", async () => {
-    const result = await request.get('/tipos/genero')
+describe('GET /tipos', () => {
+  it("/genero Obtiene como resultado un array", async () => {
+    const result = await request.get('/tipos/genero').set('Authorization', process.env.TESTOKEN || '')
     expect(result.body).toBeInstanceOf(Array)
   })
-  it("/contacto", async () => {
-    const result = await request.get('/tipos/contacto')
+  it("/contacto Obtiene como resultado un array", async () => {
+    const result = await request.get('/tipos/contacto').set('Authorization', process.env.TESTOKEN || '')
     expect(result.body).toBeInstanceOf(Array)
   })
-  it("/documento", async () => {
-    const result = await request.get('/tipos/documento')
+  it("/documento Obtiene como resultado un array", async () => {
+    const result = await request.get('/tipos/documento').set('Authorization', process.env.TESTOKEN || '')
     expect(result.body).toBeInstanceOf(Array)
   })
-  it("/origen", async () => {
-    const result = await request.get('/tipos/origen')
+  it("/origen Obtiene como resultado un array", async () => {
+    const result = await request.get('/tipos/origen').set('Authorization', process.env.TESTOKEN || '')
     expect(result.body).toBeInstanceOf(Array)
   })
-  it("/pagina", async () => {
-    const result = await request.get('/tipos/pagina')
+  it("/pagina Obtiene como resultado un array", async () => {
+    const result = await request.get('/tipos/pagina').set('Authorization', process.env.TESTOKEN || '')
     expect(result.body).toBeInstanceOf(Array)
   })
-  it("/persona", async () => {
-    const result = await request.get('/tipos/persona')
+  it("/persona Obtiene como resultado un array", async () => {
+    const result = await request.get('/tipos/persona').set('Authorization', process.env.TESTOKEN || '')
     expect(result.body).toBeInstanceOf(Array)
   })
-  it("/telefono", async () => {
-    const result = await request.get('/tipos/telefono')
+  it("/telefono Obtiene como resultado un array", async () => {
+    const result = await request.get('/tipos/telefono').set('Authorization', process.env.TESTOKEN || '')
     expect(result.body).toBeInstanceOf(Array)
   })
 })

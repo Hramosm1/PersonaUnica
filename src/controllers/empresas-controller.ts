@@ -2,6 +2,7 @@ import { prisma } from "../database";
 import { Request, Response } from "express";
 import { getFilterOfEmpresas } from "../core/util";
 import { Page } from "../interfaces/interfaces-perfiles";
+import { resultEmpresas } from "../interfaces/empresas.interface";
 export class EmpresasController {
   public async GetAll(req: Request, res: Response): Promise<void> {
     try {
