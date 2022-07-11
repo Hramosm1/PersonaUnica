@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 
 export class TelefonosController {
   async create(req: Request, res: Response) {
-
     const { body } = req;
     try {
       const response = await prisma.pU_Telefonos.create({ data: body });
@@ -13,7 +12,6 @@ export class TelefonosController {
     }
   }
   async update(req: Request, res: Response) {
-
     const { body } = req;
     const { id } = req.params;
     try {
@@ -27,7 +25,6 @@ export class TelefonosController {
     }
   }
   async delete(req: Request, res: Response) {
-
     const { id } = req.params;
     try {
       const response = await prisma.pU_Telefonos.delete({ where: { id: id } });

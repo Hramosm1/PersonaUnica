@@ -1,13 +1,24 @@
 import { prisma } from "../database";
 import { Request, Response } from "express";
+import { getFilterOfEmpresas } from "../core/util";
+import { Page } from "../interfaces/interfaces-perfiles";
 export class EmpresasController {
   public async GetAll(req: Request, res: Response): Promise<void> {
-
     try {
-      const result = await prisma.$queryRawUnsafe(
-        "SELECT p.id, p.razonSocial, (SELECT TOP 1 nombre FROM PU_Nombres WHERE idPerfil = p.id) AS nombre FROM PU_Perfil as p WHERE tipo = 2"
-      );
-      res.send(result);
+      const { take, pageNumber, skip, where } = getFilterOfEmpresas(req.params)
+      const data = await prisma.pU_Perfil.findMany({
+        select: {
+          id: true,
+          razonSocial: true,
+          PU_Nombres: { select: { nombre: true }, take: 1 }
+        },
+        skip,
+        take,
+        where
+      })
+      const totalElements = await prisma.pU_Perfil.count({ where })
+      const pageData: Page = { pageNumber, take, totalElements, totalPages: Math.ceil(totalElements / take) }
+      res.send({ data, pageData });
     } catch (error: any) {
       console.error(error);
       res.send({ error: true, mensaje: error.message });

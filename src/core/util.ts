@@ -1,4 +1,8 @@
-export function getQueryFilter(queryParams: any): { AND: any[] } | undefined {
+import { Prisma } from "@prisma/client";
+import { EmpresasParams } from "../interfaces/empresas.interface";
+import { EmpresasParamsResult } from "../interfaces/utils.interfaces";
+
+export function getQueryFilter(queryParams: any): Prisma.PU_PerfilWhereInput | undefined {
   if (Object.keys(queryParams).length > 0) {
     const filter: any[] = []
     for (const key in queryParams) {
@@ -29,4 +33,14 @@ export function getQueryFilter(queryParams: any): { AND: any[] } | undefined {
   } else {
     return undefined
   }
+}
+export function getFilterOfEmpresas({ take, page, filter }: EmpresasParams | any): EmpresasParamsResult {
+  const t = parseInt(take)
+  const p = parseInt(page)
+  const skip = t * p
+  let where: Prisma.PU_PerfilWhereInput = { tipo: { equals: 2 } }
+  if (filter != '') {
+    where.OR = [{ razonSocial: { contains: filter } }, { PU_Nombres: { some: { nombre: { contains: filter } } } }]
+  }
+  return { skip, take: t, pageNumber: p, where }
 }

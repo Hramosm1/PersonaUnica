@@ -8,7 +8,7 @@ export class LoginController {
     const { username, password } = req.body;
     try {
       const result: any = await prisma.$queryRawUnsafe(
-        `SELECT idCobrador, estado, CoNombre as nombre, CoApellido as apellido FROM IC_Cobrador WHERE Usuario = '${username}' AND Password = CAST('${password}' AS binary)`
+        `SELECT CAST(idCobrador AS INT), estado, CoNombre as nombre, CoApellido as apellido FROM IC_Cobrador WHERE Usuario = '${username}' AND Password = CAST('${password}' AS binary)`
       );
       if (result.length > 0) {
         const user = result[0];
