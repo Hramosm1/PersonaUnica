@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 
 export class NombresController {
   async create(req: Request, res: Response) {
-
     const { body } = req;
     try {
       const response = await prisma.pU_Nombres.create({ data: body });
@@ -13,7 +12,6 @@ export class NombresController {
     }
   }
   async update(req: Request, res: Response) {
-
     const { id } = req.params;
     try {
       const response = await prisma.pU_Nombres.update({
@@ -26,7 +24,6 @@ export class NombresController {
     }
   }
   async delete(req: Request, res: Response) {
-
     const { id } = req.params;
     try {
       const response = await prisma.pU_Nombres.delete({ where: { id: id } });

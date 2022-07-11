@@ -97,21 +97,15 @@ WHERE p.id = '${id}'`
     }
   }
   public async updatePerfil(req: Request, res: Response) {
-
     const { id } = req.params;
-    const {
-      primerApellido,
-      segundoApellido,
-      genero,
-      fecha,
-      observaciones,
-      razonSocial,
-    } = req.body;
+    const { primerApellido, segundoApellido, genero, fecha, observaciones, razonSocial } = req.body;
     const fFecha = fecha.split("/").reverse().join("");
     try {
-      const result = await prisma.$queryRawUnsafe(
-        `UPDATE PU_Perfil SET primerApellido='${primerApellido}', segundoApellido='${segundoApellido}',fecha='${fFecha}',genero=${genero},observaciones='${observaciones}',razonSocial='${razonSocial}' WHERE id ='${id}'`
-      );
+      const result = await prisma.pU_Perfil
+        .update({
+          data: { primerApellido, segundoApellido, fecha: fFecha, genero, observaciones, razonSocial },
+          where: { id }
+        })
       res.send({ error: false, mensaje: result });
     } catch (error: any) {
       console.error(error);
@@ -119,7 +113,6 @@ WHERE p.id = '${id}'`
     }
   }
   public async postData(req: Request, res: Response) {
-
     let existe = false;
     const {
       nombres,
