@@ -14,9 +14,10 @@ import telefonos from "./routes/telefonos";
 import direcciones from "./routes/direcciones";
 import contactos from "./routes/contactos";
 import referenciasWeb from "./routes/referenciasWeb";
+import supertest from "supertest";
 
 export class App {
-  private app: Application;
+  readonly app: Application;
   constructor(port?: number | string) {
     this.app = express();
     this.settings();
@@ -58,3 +59,6 @@ export class App {
     console.log("server on port: ", this.app.get("port"));
   }
 }
+
+export const servidor = new App()
+export const request = supertest(servidor.app)
