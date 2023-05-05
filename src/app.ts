@@ -14,10 +14,10 @@ import telefonos from "./routes/telefonos";
 import direcciones from "./routes/direcciones";
 import contactos from "./routes/contactos";
 import referenciasWeb from "./routes/referenciasWeb";
+import supertest from "supertest";
 
 export class App {
-  base: string = "/node/api";
-  private app: Application;
+  readonly app: Application;
   constructor(port?: number | string) {
     this.app = express();
     this.settings();
@@ -26,7 +26,7 @@ export class App {
   }
   //configuraciones del servidor
   private settings(): void {
-    this.app.set("port", 9421);
+    this.app.set("port", process.env.PORT || 9421);
   }
   //midlewares a implementar
   private midlewares(): void {
@@ -36,21 +36,21 @@ export class App {
   }
   //rutas
   private routes(): void {
-    this.app.get(this.base, (req, res) => {
-      res.send({ mensaje: "hola mundo" });
+    this.app.get("/", (req, res) => {
+      res.send({ mensaje: "funciona" });
     });
-    this.app.use(this.base + "/login", login);
-    this.app.use(this.base + "/perfiles", personaunica);
-    this.app.use(this.base + "/tipos", tipos);
-    this.app.use(this.base + "/empresas", empresas);
-    this.app.use(this.base + "/nombres", nombres);
-    this.app.use(this.base + "/correos", correos);
-    this.app.use(this.base + "/empleos", empleos);
-    this.app.use(this.base + "/documentos", documentos);
-    this.app.use(this.base + "/telefonos", telefonos);
-    this.app.use(this.base + "/direcciones", direcciones);
-    this.app.use(this.base + "/contactos", contactos);
-    this.app.use(this.base + "/referenciasWeb", referenciasWeb);
+    this.app.use("/login", login);
+    this.app.use("/perfiles", personaunica);
+    this.app.use("/tipos", tipos);
+    this.app.use("/empresas", empresas);
+    this.app.use("/nombres", nombres);
+    this.app.use("/correos", correos);
+    this.app.use("/empleos", empleos);
+    this.app.use("/documentos", documentos);
+    this.app.use("/telefonos", telefonos);
+    this.app.use("/direcciones", direcciones);
+    this.app.use("/contactos", contactos);
+    this.app.use("/referenciasWeb", referenciasWeb);
   }
 
   //funcion publica que inicia el servidor
@@ -59,3 +59,6 @@ export class App {
     console.log("server on port: ", this.app.get("port"));
   }
 }
+
+export const servidor = new App()
+export const request = supertest(servidor.app)

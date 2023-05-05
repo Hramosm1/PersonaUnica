@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 
 export class DocumentosController {
   async create(req: Request, res: Response) {
-
     const { body } = req;
     try {
       const response = await prisma.pU_Documentos.create({ data: body });
@@ -13,7 +12,6 @@ export class DocumentosController {
     }
   }
   async update(req: Request, res: Response) {
-
     const { body } = req;
     const { id } = req.params;
     try {
@@ -27,7 +25,6 @@ export class DocumentosController {
     }
   }
   async delete(req: Request, res: Response) {
-
     const { id } = req.params;
     try {
       const response = await prisma.pU_Documentos.delete({ where: { id: id } });

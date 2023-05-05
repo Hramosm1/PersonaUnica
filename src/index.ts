@@ -1,3 +1,3 @@
-import { App } from "./app";
-const app = new App();
-app.listen();
+import { servidor } from "./app";
+
+servidor.listen();

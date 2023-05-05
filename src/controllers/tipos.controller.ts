@@ -2,9 +2,6 @@ import { Request, Response } from "express";
 import { prisma } from "../database";
 
 export class TiposController {
-  /**
-   * getGeneros
-   */
   public async getGeneros(req: Request, res: Response) {
     try {
       const response = await prisma.pU_Generos.findMany();

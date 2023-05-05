@@ -6,3 +6,4 @@ package-lock.json
 yarn*
 .env
 notas.txt
+pnpm-lock*
